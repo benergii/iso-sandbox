@@ -5,12 +5,23 @@ from OpenGL.GLU import *
 import numpy as np
 from PIL import Image
 
+from functions.iso_gameboard import build_iso_gameboard
+from functions.render_gameboard import render_grid
+
 window_x = 800
 window_y = 600
+unit_width = 0.4
+gameboard_dimensions = [3, 3]
 
 # ------------------------------------------ #
 #          | Initialisation Stage |
 #          ------------------------
+
+# Unit height needs to correspond with the iso-transformed unit width
+unit_height = (unit_width ** 2) * (2 / 6)
+
+# Building the game board
+gameboard = build_iso_gameboard(gameboard_dimensions, unit_width, unit_height)
 
 def init():
 
@@ -28,6 +39,8 @@ def init():
 def draw_scene():
 
   glClear(GL_COLOR_BUFFER_BIT)
+
+  render_grid(gameboard)
 
   glutSwapBuffers()
 
