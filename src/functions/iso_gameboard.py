@@ -1,30 +1,12 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
+import random
+
+from .tools import iso_translater, cartesian_translater
 
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
-
-# Translate cartesian coordinates to isometric coordinates
-def iso_translater(x, y, unit_width):
-
-  iso_x = (x * unit_width - y * unit_width) * (unit_width / 2)
-  iso_y = (x * unit_width + y * unit_width) * (unit_width / 3)
-
-  return iso_x, iso_y
-
-# Center all cells around a provided cell index
-def center_gameboard(cells, center_cell_index):
-
-  pivot_point = cells[center_cell_index]['v1']
-
-  for cell in cells:
-    
-    for n in range(4):
-      cell[f'v{n + 1}'] = [
-        cell[f'v{n + 1}'][0] - pivot_point[0],
-        cell[f'v{n + 1}'][1] - pivot_point[1]
-      ]
 
 # Building a list of dictionaries for iso game board
 def build_iso_gameboard():
@@ -40,10 +22,10 @@ def build_iso_gameboard():
   for x in range(board_x):
     for y in range(board_y):
       
-      v1_x, v1_y = iso_translater(x, y, config.unit_width)
-      v2_x, v2_y = iso_translater(x + 1, y, config.unit_width)
-      v3_x, v3_y = iso_translater(x + 1, y + 1, config.unit_width)
-      v4_x, v4_y = iso_translater(x, y + 1, config.unit_width)
+      v1_x, v1_y = iso_translater(x, y)
+      v2_x, v2_y = iso_translater(x + 1, y)
+      v3_x, v3_y = iso_translater(x + 1, y + 1)
+      v4_x, v4_y = iso_translater(x, y + 1)
 
       cells.append({
         'v1': [v1_x, v1_y],
@@ -51,7 +33,7 @@ def build_iso_gameboard():
         'v3': [v3_x, v3_y],
         'v4': [v4_x, v4_y],
         'height': config.unit_height,
-        'color': (1, 1, 1),
+        'color': (1, 1, 1 / (y + 0.0001)),
         'objectOnCell': None,
         'objectHeight': None
       })

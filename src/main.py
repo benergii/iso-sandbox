@@ -6,16 +6,12 @@ from OpenGL.GLU import *
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
 
-from functions.iso_gameboard import build_iso_gameboard
 from functions.render_gameboard import render_grid
-from functions.input import special_keys
+from functions.input import special_keys, normal_keys
 
 # ------------------------------------------ #
 #          | Initialisation Stage |
 #          ------------------------
-
-# Building the game board
-gameboard = build_iso_gameboard()
 
 def init():
 
@@ -34,7 +30,7 @@ def draw_scene():
 
   glClear(GL_COLOR_BUFFER_BIT)
 
-  render_grid(gameboard)
+  render_grid(config.gameboard)
 
   glutSwapBuffers()
 
@@ -54,6 +50,7 @@ def main():
   # Render stuff
   glutDisplayFunc(draw_scene)
   glutSpecialFunc(special_keys)
+  glutKeyboardFunc(normal_keys)
 
   # Start the loop of the game
   glutMainLoop()
