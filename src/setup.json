@@ -1,0 +1,9 @@
+{
+  "windowX": 1024,
+  "windowY": 768,
+  "unitWidth": 0.4,
+  "gameBoardDimensions": [
+    11,
+    11
+  ]
+}
