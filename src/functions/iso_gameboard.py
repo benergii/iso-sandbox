@@ -10,8 +10,24 @@ def iso_translater(x, y, unit_width):
 
   return iso_x, iso_y
 
+# Center all cells around a provided cell index
+def center_gameboard(cells, center_cell_index):
+
+  pivot_point = cells[center_cell_index]['v1']
+
+  for cell in cells:
+    
+    for n in range(4):
+      cell[f'v{n + 1}'] = [
+        cell[f'v{n + 1}'][0] - pivot_point[0],
+        cell[f'v{n + 1}'][1] - pivot_point[1]
+      ]
+
 # Building a list of dictionaries for iso game board
 def build_iso_gameboard(board_dimensions, unit_width, unit_height):
+
+  # PLEASE BE AWARE: GAMEBOARDS WITH ODD TOTAL AREAS WORK BEST
+  # IE 11 x 11 vs 10 x 10
 
   board_x = board_dimensions[0]
   board_y = board_dimensions[1]
@@ -37,4 +53,6 @@ def build_iso_gameboard(board_dimensions, unit_width, unit_height):
         'objectHeight': None
       })
   
+  center_gameboard(cells, (board_x * board_y) // 2)
+
   return cells

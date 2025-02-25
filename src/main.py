@@ -9,7 +9,7 @@ import json
 from functions.iso_gameboard import build_iso_gameboard
 from functions.render_gameboard import render_grid
 
-with open('src/setup.json', 'r') as file:
+with open('setup.json', 'r') as file:
   setup_constants = json.load(file)
 
 window_x = setup_constants['windowX']
