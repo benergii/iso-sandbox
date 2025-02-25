@@ -4,14 +4,18 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import numpy as np
 from PIL import Image
+import json
 
 from functions.iso_gameboard import build_iso_gameboard
 from functions.render_gameboard import render_grid
 
-window_x = 800
-window_y = 600
-unit_width = 0.4
-gameboard_dimensions = [3, 3]
+with open('src/setup.json', 'r') as file:
+  setup_constants = json.load(file)
+
+window_x = setup_constants['windowX']
+window_y = setup_constants['windowY']
+unit_width = setup_constants['unitWidth']
+gameboard_dimensions = setup_constants['gameBoardDimensions']
 
 # ------------------------------------------ #
 #          | Initialisation Stage |
