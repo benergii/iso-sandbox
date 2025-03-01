@@ -32,6 +32,7 @@ def rotate_camera(key):
     for cell in config.gameboard:
       print(cell)
       # Storing v1 as will be overwriting it in loop
+      # Need to deepcopy as taking item from dictionary
       v1 = deepcopy(cell['v1'])
       for n in [4, 3, 2, 1]:
 
@@ -58,7 +59,9 @@ def rotate_camera(key):
           cell[f'v{(n + 1) % 4}'][0] = iso_x
           cell[f'v{(n + 1) % 4}'][1] = iso_y
       
-      print(cell)
+      config.rotation_integer = (config.rotation_integer + 1) % 4
+      print('Rotation complete')
+      print(f'Now rendering sprites of rotation integer {config.rotation_integer}')
     
     # Now, in order for rendering to work, we need to sort the gameboard array
     config.gameboard = sorted(config.gameboard, key = lambda t: (t['v1'][1], t['v1'][0]))

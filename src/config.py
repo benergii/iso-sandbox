@@ -16,5 +16,8 @@ unit_height = (unit_width ** 2) * (2 / 6)
 # UNIT HEIGHT ADDED IN RENDER PHASE
 camera_offset = [0, -1 * gameboard_dimensions[0] * unit_height]
 
+# Rotation integer ranges from 0-3 and tells the game which sprites to render
+rotation_integer = 0
+
 # BUILDING THE GAMEBOARD
 gameboard = build_iso_gameboard()
