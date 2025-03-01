@@ -3,7 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from copy import deepcopy
 
-from .tools import iso_translater, cartesian_translater
+from .tools import rotate_coordinates
 
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
@@ -38,32 +38,25 @@ def rotate_camera(key):
       v1 = deepcopy(cell['v1'])
       for n in [4, 3, 2, 1]:
 
-        # First we need to convert back to cartesian coords
-        cart_x, cart_y = cartesian_translater(*v1) if n == 1 else cartesian_translater(*cell[f'v{n}'])
-        # print(f'Converting the {n}th vertice: {cart_x}, {cart_y}')
-
-        # Then we need to rotate it, as per standard (x' = -y, y' = x) pattern
-        original_x = cart_x
-        cart_x = -1 * cart_y
-        cart_y = original_x
-        # print(f'Rotated coordinates: {cart_x}, {cart_y}')
-
-        # Now finally, we convert BACK to iso LOL
-        iso_x, iso_y = iso_translater(cart_x, cart_y)
+        iso_x, iso_y = rotate_coordinates(*v1) if n == 1 else rotate_coordinates(*cell[f'v{n}'])
 
         # NOW WE WRITE BACK TO THE CELL
+        # Using this 'if' condition as 4 % 4 = 0. We need it to be 4
         if n == 3:
-          # print('Writing to the 4th vertice')
           cell['v4'][0] = iso_x
           cell['v4'][1] = iso_y
         else:
-          # print(f'Writing to the {(n + 1) % 4}th vertice')
           cell[f'v{(n + 1) % 4}'][0] = iso_x
           cell[f'v{(n + 1) % 4}'][1] = iso_y
-      
+    
+    # Need to run a full rotation pattern on the camera_offset config variable too
+    config.camera_offset = [*rotate_coordinates(*config.camera_offset)]
+    
+    # Update the rotation integer to tell game which sprites to render
     config.rotation_integer = (config.rotation_integer + 1) % 4
-    print('Rotation complete')
-    print(f'Now rendering sprites of rotation integer {config.rotation_integer}')
     
     # Now, in order for rendering to work, we need to sort the gameboard array
+    # As we need the farthest cells to render first
     config.gameboard = sorted(config.gameboard, key = lambda t: (t['v1'][1], t['v1'][0]))
+    print('Rotation complete')
+    print(f'Now rendering sprites of rotation integer {config.rotation_integer}')

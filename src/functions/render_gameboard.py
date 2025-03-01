@@ -4,7 +4,7 @@ from OpenGL.GLU import *
 
 import config
 
-from .tools import add_vectors, multiply_vectors
+from .tools import add_vectors
 
 def render_grid(gameboard):
 
