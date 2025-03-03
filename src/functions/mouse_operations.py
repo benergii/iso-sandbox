@@ -46,9 +46,9 @@ def mouse_click_mechanics(button, state, x, y):
       print(f'Mouse Clicked at: {click_position}')
     
     elif state == GLUT_UP:
-      print(f'Mouse unclicked at: [{gl_x}, {gl_y}]')
       click_position = None
       is_dragging = False
+      print(f'Mouse unclicked at: [{gl_x}, {gl_y}]')
 
 # Handle the mouse being click-dragged on screen
 def mouse_drag_mechanics(x, y):
@@ -66,5 +66,6 @@ def mouse_drag_mechanics(x, y):
     # If you ever drag up or down by one unit...
     if units_dragged != 0:
 
+      # Then update the height of the cell!
       config.interaction_cell['height'] += units_dragged
       click_position = [gl_x, gl_y]

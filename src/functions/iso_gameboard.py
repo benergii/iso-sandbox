@@ -38,4 +38,5 @@ def build_iso_gameboard():
         'objectHeight': None
       })
 
+  # Need the list to always be stored in descending order - for rendering orders sake
   return list(reversed(cells))
