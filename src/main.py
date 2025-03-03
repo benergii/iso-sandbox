@@ -7,7 +7,7 @@ from OpenGL.GLU import *
 import config
 
 from functions.render_gameboard import render_grid
-from functions.input import special_keys, normal_keys, mouse_motion
+from functions.input import special_keys, normal_keys, mouse_motion, mouse_click
 
 # ------------------------------------------ #
 #          | Initialisation Stage |
@@ -52,6 +52,7 @@ def main():
   glutSpecialFunc(special_keys)
   glutKeyboardFunc(normal_keys)
   glutPassiveMotionFunc(mouse_motion)
+  glutMouseFunc(mouse_click)
 
   # Start the loop of the game
   glutMainLoop()
