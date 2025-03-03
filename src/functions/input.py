@@ -3,7 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 from .camera_operations import move_camera, rotate_camera
-from .mouse_operations import mouse_hover_mechanics, mouse_click_mechanics
+from .mouse_operations import mouse_hover_mechanics, mouse_click_mechanics, mouse_drag_mechanics
 
 # 'Special' keys here - such as arrow keys, anything non-alphanumeric basically
 def special_keys(key, x, y):
@@ -30,5 +30,11 @@ def mouse_motion(x, y):
 def mouse_click(button, state, x, y):
 
   mouse_click_mechanics(button, state, x, y)
+
+  glutPostRedisplay()
+
+def mouse_dragging(x, y):
+
+  mouse_drag_mechanics(x, y)
 
   glutPostRedisplay()

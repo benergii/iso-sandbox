@@ -29,9 +29,10 @@ def mouse_hover_mechanics(x, y):
       
       config.interaction_cell = cell
 
+# Handle the mouse clicking mechanics
 def mouse_click_mechanics(button, state, x, y):
 
-  global click_position
+  global click_position, is_dragging
 
   # Convert pixel coords to normalised OpenGL coords
   gl_x, gl_y = normalise_pixel_coords(x, y)
@@ -41,8 +42,29 @@ def mouse_click_mechanics(button, state, x, y):
 
     if state == GLUT_DOWN:
       click_position = [gl_x, gl_y]
+      is_dragging = True
       print(f'Mouse Clicked at: {click_position}')
     
     elif state == GLUT_UP:
       print(f'Mouse unclicked at: [{gl_x}, {gl_y}]')
       click_position = None
+      is_dragging = False
+
+# Handle the mouse being click-dragged on screen
+def mouse_drag_mechanics(x, y):
+
+  global click_position, is_dragging
+
+  gl_x, gl_y = normalise_pixel_coords(x, y)
+
+  if is_dragging:
+    
+    units_dragged = ((gl_y - click_position[1]) // config.unit_height) * config.unit_height
+
+    if units_dragged != 0:
+
+      for n in range(4):
+        config.interaction_cell[f'v{n + 1}'][1] += units_dragged
+
+      config.interaction_cell['height'] += units_dragged
+      click_position = [gl_x, gl_y]
