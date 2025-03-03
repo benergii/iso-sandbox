@@ -55,16 +55,21 @@ def mouse_drag_mechanics(x, y):
 
   global click_position, is_dragging
 
+  # Normalise mouse coords
   gl_x, gl_y = normalise_pixel_coords(x, y)
 
   if is_dragging:
     
-    units_dragged = ((gl_y - click_position[1]) // config.unit_height) * config.unit_height
+    # Using int(division) instead of floor division, as floor division passes 0 at twice the rate for neg numbers
+    units_dragged = int((gl_y - click_position[1]) / config.unit_height) * config.unit_height
 
+    # If you ever drag up or down by one unit...
     if units_dragged != 0:
 
+      # Then add that unit to the y-position of the interaction cell..
       for n in range(4):
         config.interaction_cell[f'v{n + 1}'][1] += units_dragged
-
+      # Add the unit to the cells height (so it renders the walls properly)...
       config.interaction_cell['height'] += units_dragged
+      # ... Then reset the starting position!
       click_position = [gl_x, gl_y]
