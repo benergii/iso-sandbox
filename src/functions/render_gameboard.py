@@ -29,7 +29,9 @@ def render_grid(gameboard):
     glEnd()
 
     # Rendering the grid around the cell
-    glColor(0, 0, 1)
+    glColor(0, 0, 1, 0.5)
+    # Thicker grid if mouse is hovered over it
+    glLineWidth(3) if config.interaction_cell == cell else glLineWidth(0.5)
     glBegin(GL_LINE_LOOP)
     for n in range(4):
       glVertex2f(*add_vectors(cell[f'v{n + 1}'], config.camera_offset))
