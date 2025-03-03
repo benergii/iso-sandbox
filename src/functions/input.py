@@ -33,6 +33,7 @@ def mouse_click(button, state, x, y):
 
   glutPostRedisplay()
 
+# Mouse Dragging
 def mouse_dragging(x, y):
 
   mouse_drag_mechanics(x, y)
