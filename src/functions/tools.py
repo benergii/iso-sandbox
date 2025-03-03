@@ -60,15 +60,15 @@ def is_point_in_quad(point, v1, v2, v3, v4):
 
 
 # I have no reason to need these - but might be useful
-def add_vectors(v1, v2):
+def add_vectors(v1, v2 = [0, 0], v3 = [0, 0]):
   return [
-    v1[0] + v2[0],
-    v1[1] + v2[1]
+    v1[0] + v2[0] + v3[0],
+    v1[1] + v2[1] + v3[1]
   ]
 
-def multiply_vectors(v1, v2):
+def multiply_vectors(v1, v2, v3 = [0, 0]):
 
   return [
-    v1[0] * v2[0],
-    v1[1] * v2[1]
+    v1[0] * v2[0] * v3[0],
+    v1[1] * v2[1] * v3[1]
   ]

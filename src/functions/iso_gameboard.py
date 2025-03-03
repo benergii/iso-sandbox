@@ -38,4 +38,4 @@ def build_iso_gameboard():
         'objectHeight': None
       })
 
-  return cells
+  return list(reversed(cells))

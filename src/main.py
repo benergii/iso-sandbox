@@ -30,7 +30,7 @@ def draw_scene():
 
   glClear(GL_COLOR_BUFFER_BIT)
 
-  render_grid(config.gameboard)
+  render_grid()
 
   glutSwapBuffers()
 

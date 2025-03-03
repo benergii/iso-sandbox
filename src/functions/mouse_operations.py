@@ -20,10 +20,10 @@ def mouse_hover_mechanics(x, y):
   for cell in config.gameboard:
 
     # Preparing cell vertices for area intersection detection
-    v1 = add_vectors(cell['v1'], config.camera_offset)
-    v2 = add_vectors(cell['v2'], config.camera_offset)
-    v3 = add_vectors(cell['v3'], config.camera_offset)
-    v4 = add_vectors(cell['v4'], config.camera_offset)
+    v1 = add_vectors(cell['v1'], [0, cell['height']], config.camera_offset)
+    v2 = add_vectors(cell['v2'], [0, cell['height']], config.camera_offset)
+    v3 = add_vectors(cell['v3'], [0, cell['height']], config.camera_offset)
+    v4 = add_vectors(cell['v4'], [0, cell['height']], config.camera_offset)
 
     if is_point_in_quad((gl_x, gl_y), v1, v2, v3, v4):
       
@@ -66,10 +66,5 @@ def mouse_drag_mechanics(x, y):
     # If you ever drag up or down by one unit...
     if units_dragged != 0:
 
-      # Then add that unit to the y-position of the interaction cell..
-      for n in range(4):
-        config.interaction_cell[f'v{n + 1}'][1] += units_dragged
-      # Add the unit to the cells height (so it renders the walls properly)...
       config.interaction_cell['height'] += units_dragged
-      # ... Then reset the starting position!
       click_position = [gl_x, gl_y]

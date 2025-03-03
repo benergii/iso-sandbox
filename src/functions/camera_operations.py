@@ -57,6 +57,6 @@ def rotate_camera(key):
     
     # Now, in order for rendering to work, we need to sort the gameboard array
     # As we need the farthest cells to render first
-    config.gameboard = sorted(config.gameboard, key = lambda t: (t['v1'][1], t['v1'][0]))
+    config.gameboard = sorted(config.gameboard, key = lambda t: (t['v1'][1],t['v1'][0]), reverse = True)
     print('Rotation complete')
     print(f'Now rendering sprites of rotation integer {config.rotation_integer}')
