@@ -21,3 +21,6 @@ rotation_integer = 0
 
 # BUILDING THE GAMEBOARD
 gameboard = build_iso_gameboard()
+
+# Empty variable to store the value of the cell we are interacting with
+interaction_cell = None
