@@ -70,6 +70,8 @@ def build_object_list():
     [6, 6],
     [6, 5],
   ]
+
+  points_2 = list(reversed(points_2))
   
   translated_points_2 = []
 
