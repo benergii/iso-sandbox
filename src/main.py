@@ -6,7 +6,7 @@ from OpenGL.GLU import *
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
 
-from functions.rendering import render_grid, render_objects, render_everything
+from functions.rendering import render_everything
 from functions.input import special_keys, normal_keys, mouse_motion, mouse_click, mouse_dragging
 from functions.object_movement import update_object_positions
 
