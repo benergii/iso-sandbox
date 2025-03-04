@@ -46,23 +46,35 @@ def build_iso_gameboard():
 # Below is suuuuper arbitrary, just space-filling to PoC movement
 def build_object_list():
 
+  # I've just designed a random path here, simply to test depth around terraformed tiles
   points_1 = [
-    [0, 0],
-    [0, 1],
-    [1, 1],
-    [1, 0]
+    [0.5, 0.5],
+    [0.5, 3.5],
+    [8.5, 3.5],
+    [8.5, 1.5],
+    [6.5, 1.5],
+    [6.5, 3.5],
+    [10.5, 3.5],
+    [10.5, 10.5],
+    [9.5, 10.5],
+    [9.5, 8.5],
+    [6.5, 8.5],
+    [6.5, 2.5],
+    [0.5, 2.5],
+
   ]
 
   translated_points_1 = []
 
   for n in points_1:
-    translated_points_1.append(add_vectors(iso_translater(*n), [0, config.unit_height]))
+    translated_points_1.append(iso_translater(*n))
 
   return [
     {
       'name': 'orb',
       'color': (1, 0, 0),
       'path': translated_points_1,
+      'height': config.unit_height,
       'speed': 0.2,
       'lastKnownSegment': 0,
       'lastKnownPosition': translated_points_1[0]
