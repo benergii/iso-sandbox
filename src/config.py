@@ -1,4 +1,4 @@
-from functions.iso_gameboard import build_iso_gameboard
+from functions.build_objects import build_iso_gameboard, build_object_list
 
 # BRAND NEW PATTER JUST DROPPED
 # STORE ALL YOUR CONSTANTS IN THIS CONFIG FILE
@@ -24,3 +24,7 @@ gameboard = build_iso_gameboard()
 
 # Empty variable to store the value of the cell we are interacting with
 interaction_cell = None
+
+
+# ------- TESTING OBJECT MOVEMENT ------- #
+objects = build_object_list()

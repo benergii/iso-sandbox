@@ -35,3 +35,16 @@ def render_grid():
     for n in range(4):
       glVertex2f(*add_vectors(cell[f'v{n + 1}'], [0, cell['height']], config.camera_offset))
     glEnd()
+
+
+def render_objects():
+
+  for object in config.objects:
+
+    glColor(1, 0, 0)
+    glBegin(GL_QUADS)
+    glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], [0, config.unit_height], config.camera_offset))
+    glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], [0, config.unit_height], config.camera_offset))
+    glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], [0, config.unit_height], config.camera_offset))
+    glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], [0, config.unit_height], config.camera_offset))
+    glEnd()

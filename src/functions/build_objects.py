@@ -40,3 +40,27 @@ def build_iso_gameboard():
 
   # Need the list to always be stored in descending order - for rendering orders sake
   return list(reversed(cells))
+
+
+# ------ TESTING MOVING OBJECTS ------ #
+def build_object_list():
+
+  v1_x, v1_y = iso_translater(5, 5)
+  v2_x, v2_y = iso_translater(8, 5)
+  v3_x, v3_y = iso_translater(8, 8)
+  v4_x, v4_y = iso_translater(5, 8)
+
+  return [
+    {
+      'name': 'orb',
+      'path': [
+        [v1_x, v1_y],
+        [v2_x, v2_y],
+        [v3_x, v3_y],
+        [v4_x, v4_y]
+      ],
+      'speed': 0.5,
+      'lastKnownSegment': 0,
+      'lastKnownPosition': [v1_x, v1_y]
+    }
+  ]
