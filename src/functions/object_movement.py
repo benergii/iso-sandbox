@@ -11,6 +11,8 @@ def update_object_positions():
     global last_snapped_time
 
     for object in config.objects:
+
+        # Store the stuff I need - just makes the next steps easier
         current_position = object['lastKnownPosition']
         current_segment = object['lastKnownSegment']
         path = object['path']
@@ -21,7 +23,6 @@ def update_object_positions():
         # First, let's see if this object needs to be rendered on the next path segment
         dist_left_current_segment = get_magnitude(current_position, path[(current_segment + 1) % n_points])
         dist_to_travel = (time() - last_snapped_time) * speed
-        # print(f"Time difference: {time() - last_snapped_time}, Distance to travel: {dist_to_travel}")
 
         # Case 1: this increment will keep the object along the current path segment
         if dist_to_travel <= dist_left_current_segment:

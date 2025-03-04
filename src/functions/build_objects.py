@@ -43,24 +43,53 @@ def build_iso_gameboard():
 
 
 # ------ TESTING MOVING OBJECTS ------ #
+# Below is suuuuper arbitrary, just space-filling to PoC movement
 def build_object_list():
 
-  v1_x, v1_y = iso_translater(5, 5)
-  v2_x, v2_y = iso_translater(8, 5)
-  v3_x, v3_y = iso_translater(8, 8)
-  v4_x, v4_y = iso_translater(5, 8)
+  points_1 = [
+    [5, 5],
+    [5, 6],
+    [6, 6],
+    [6, 5],
+    [11, 5],
+    [11, 11],
+    [5, 11]
+  ]
+
+  translated_points_1 = []
+
+  for n in points_1:
+    translated_points_1.append(iso_translater(*n))
+
+  points_2 = [
+    [11, 5],
+    [11, 11],
+    [5, 11],
+    [5, 5],
+    [5, 6],
+    [6, 6],
+    [6, 5],
+  ]
+  
+  translated_points_2 = []
+
+  for n in points_2:
+    translated_points_2.append(iso_translater(*n))
 
   return [
     {
       'name': 'orb',
-      'path': [
-        [v1_x, v1_y],
-        [v2_x, v2_y],
-        [v3_x, v3_y],
-        [v4_x, v4_y]
-      ],
-      'speed': 0.5,
+      'color': (1, 0, 0),
+      'path': translated_points_1,
+      'speed': 0.8,
       'lastKnownSegment': 0,
-      'lastKnownPosition': [v1_x, v1_y]
+      'lastKnownPosition': translated_points_1[0]
+    }, {
+      'name': 'orb',
+      'color': (0, 0, 1),
+      'path': translated_points_2,
+      'speed': 1.2,
+      'lastKnownSegment': 0,
+      'lastKnownPosition': translated_points_2[0]
     }
   ]

@@ -36,12 +36,13 @@ def render_grid():
       glVertex2f(*add_vectors(cell[f'v{n + 1}'], [0, cell['height']], config.camera_offset))
     glEnd()
 
-
+# Render non-static objects
 def render_objects():
 
   for object in config.objects:
 
-    glColor(1, 0, 0)
+    # For now I'm just rendering a super basic quad around a point - just to PoC this
+    glColor(*object['color'])
     glBegin(GL_QUADS)
     glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], [0, config.unit_height], config.camera_offset))
     glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], [0, config.unit_height], config.camera_offset))
