@@ -49,6 +49,19 @@ def rotate_camera(key):
           cell[f'v{(n + 1) % 4}'][0] = iso_x
           cell[f'v{(n + 1) % 4}'][1] = iso_y
     
+    # Also need to rotate all the object paths and current positions
+    for object in config.objects:
+
+      # Approach for this (since is a list) is to just append a new blank list then overwrite the old one
+      rotated_path = []
+      for n in range(len(object['path'])):
+        rotated_path.append(rotate_coordinates(*object['path'][n]))
+      
+      object['path'] = rotated_path
+
+      # Now do the Current Position as well
+      object['lastKnownPosition'] = rotate_coordinates(*object['lastKnownPosition'])
+    
     # Need to run a full rotation pattern on the camera_offset config variable too
     config.camera_offset = [*rotate_coordinates(*config.camera_offset)]
     

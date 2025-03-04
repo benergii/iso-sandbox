@@ -59,11 +59,24 @@ def is_point_in_quad(point, v1, v2, v3, v4):
   return (b1 == b2) and (b2 == b3) and (b3 == b4)
 
 
+# Magnitude of line between two points
+def get_magnitude(v1, v2):
+
+  return ((v2[0] - v1[0]) ** 2 + (v2[1] - v1[1]) ** 2) ** (1 / 2)
+
+# Using magnitude to get unit vector between points
+def get_unit_vector(v1, v2):
+
+  magnitude = get_magnitude(v1, v2)
+
+  return [(v2[0] - v1[0]) / magnitude, (v2[1] - v1[1]) / magnitude]
+
+
 # I have no reason to need these - but might be useful
-def add_vectors(v1, v2 = [0, 0], v3 = [0, 0]):
+def add_vectors(v1, v2, v3 = [0, 0], v4 = [0, 0]):
   return [
-    v1[0] + v2[0] + v3[0],
-    v1[1] + v2[1] + v3[1]
+    v1[0] + v2[0] + v3[0] + v4[0],
+    v1[1] + v2[1] + v3[1] + v4[1]
   ]
 
 def multiply_vectors(v1, v2, v3 = [0, 0]):

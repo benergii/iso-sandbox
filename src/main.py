@@ -6,8 +6,9 @@ from OpenGL.GLU import *
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
 
-from functions.render_gameboard import render_grid
+from functions.rendering import render_grid, render_objects
 from functions.input import special_keys, normal_keys, mouse_motion, mouse_click, mouse_dragging
+from functions.object_movement import update_object_positions
 
 # ------------------------------------------ #
 #          | Initialisation Stage |
@@ -28,11 +29,16 @@ def init():
 
 def draw_scene():
 
+  update_object_positions()
+
   glClear(GL_COLOR_BUFFER_BIT)
 
   render_grid()
+  render_objects()
 
   glutSwapBuffers()
+  # Below function FORCES a rerender - which you need to render the objects movement
+  glutPostRedisplay()
 
 # -------------------------------------------- #
 #         | Building runtime stage |
