@@ -17,6 +17,8 @@ def mouse_hover_mechanics(x, y):
   # Convert pixel coords to normalised (-1, 1) coords
   gl_x, gl_y = normalise_pixel_coords(x, y)
 
+  config.interaction_cell = None
+
   for cell in config.gameboard:
 
     # Preparing cell vertices for area intersection detection
