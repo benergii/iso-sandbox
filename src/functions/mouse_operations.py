@@ -19,7 +19,9 @@ def mouse_hover_mechanics(x, y):
 
   config.interaction_cell = None
 
-  for cell in config.gameboard:
+  for cell_index in config.cell_render_order:
+
+    cell = config.gameboard[cell_index]
 
     # Preparing cell vertices for area intersection detection
     v1 = add_vectors(cell['v1'], [0, cell['height']], config.camera_offset)

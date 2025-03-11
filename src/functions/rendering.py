@@ -6,39 +6,44 @@ import config
 
 from .tools import add_vectors
 
+# ------------------------------------------ #
 
-# Fuck it let's just try rendering everything???
-def render_everything():
+# RENDERING WITH A DICTIONARY PATTERN INSTEAD
+def render_with_dictionary():
 
-  all_objects = []
+  # Fist let's compile a list of ALL elements we need to render - cells and objects
+  # Let's create a 'type' to define whether they're a cell (0) or an object (1)
+  # And also a 'key' which we use to retrieve them from their relevant list/dicts
 
-  # Step 1: let's put all the cell coordinates into a list
-  for n in range(len(config.gameboard)):
+  # Cells are in a dict - so follow this pattern
+  # BTW - not 100% sure why I used v3 here (maybe because highest point of the cell?)
+  all_elements = [{
+    'type': 0,
+    'key': n,
+    'coord': config.gameboard[n]['v3']
+    } for n in config.cell_render_order
+  ]
 
-    all_objects.append({
-      'type': 0,
-      'index': n,
-      'coord': config.gameboard[n]['v3']
-    })
-  
-  # Step 2: let's put all the object positions into a list
+  # Objects are still in a list of dicts (might change this at some point)
   for n in range(len(config.objects)):
 
-    all_objects.append({
+    all_elements.append({
       'type': 1,
-      'index': n,
+      'key': n,
       'coord': config.objects[n]['lastKnownPosition']
     })
 
-  # Now let's sort EVERYTHING in descending order
-  all_objects = sorted(all_objects, key = lambda t: (t['coord'][1], t['coord'][0], t['type']), reverse = True)
+  # Sort em all!!
+  all_elements = sorted(all_elements, key = lambda t: (t['coord'][1], t['coord'][0], t['type']), reverse = True)
 
-  # Now we CONDITIONALLY render them - if object, do the object thing, if cell do the cell thing
-  for item in all_objects:
+  # Now for each element...
+  for element in all_elements:
 
-    if item['type'] == 0:
-
-      cell = config.gameboard[item['index']]
+    # If they're a cell...
+    if element['type'] == 0:
+      
+      # Then render a cell!
+      cell = config.gameboard[element['key']]
 
       # Rendering the walls of each cell
       glColor(0.5, 0.5, 0.5)
@@ -64,10 +69,13 @@ def render_everything():
       for n in range(4):
         glVertex2f(*add_vectors(cell[f'v{n + 1}'], [0, cell['height']], config.camera_offset))
       glEnd()
-    
-    elif item['type'] == 1:
 
-      object = config.objects[item['index']]
+    # Else, if they're an object...
+    elif element['type'] == 1:
+
+      # You guessed it skipper - render an object!
+      # It's really that easy!
+      object = config.objects[element['key']]
 
       # For now I'm just rendering a super basic quad around a point - just to PoC this
       glColor(*object['color'])

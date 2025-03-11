@@ -17,7 +17,7 @@ def build_iso_gameboard():
   board_x = config.gameboard_dimensions[0]
   board_y = config.gameboard_dimensions[1]
 
-  cells = []
+  cells = {}
 
   for x in range(board_x):
     for y in range(board_y):
@@ -27,7 +27,7 @@ def build_iso_gameboard():
       v3_x, v3_y = iso_translater(x + 1, y + 1)
       v4_x, v4_y = iso_translater(x, y + 1)
 
-      cells.append({
+      cells[(x, y)] = {
         'v1': [v1_x, v1_y],
         'v2': [v2_x, v2_y],
         'v3': [v3_x, v3_y],
@@ -36,10 +36,11 @@ def build_iso_gameboard():
         'color': (1, 1, 1 / (y + 0.0001)),
         'objectOnCell': None,
         'objectHeight': None
-      })
+      }
 
-  # Need the list to always be stored in descending order - for rendering orders sake
-  return list(reversed(cells))
+  # Now return the cells dictionary, as well as the list in which to render the cells
+  # Might change this method in the near future but for now this be how we doing this
+  return cells, list(reversed(cells.keys()))
 
 
 # ------ TESTING MOVING OBJECTS ------ #
