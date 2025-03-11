@@ -85,3 +85,24 @@ def render_with_dictionary():
       glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], [0, object['height']], config.camera_offset))
       glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], [0, object['height']], config.camera_offset))
       glEnd()
+
+
+def render_hud():
+
+  for button_index in list(config.hud_buttons.keys()):
+
+    button = config.hud_buttons[button_index]
+
+    # Render button background
+    glColor(1, 0.7, 0.7) if config.user_data['mode'] == button['buttonName'] else glColor(1, 1, 1)
+    glBegin(GL_QUADS)
+    for n in range(4):
+      glVertex2f(*button[f'v{n + 1}'])
+    glEnd()
+
+    # Render button outline
+    glColor(0.4, 0.4, 0.4)
+    glBegin(GL_LINE_LOOP)
+    for n in range(4):
+      glVertex2f(*button[f'v{n + 1}'])
+    glEnd()

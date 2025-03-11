@@ -1,4 +1,4 @@
-from functions.build_objects import build_iso_gameboard, build_object_list
+from functions.build_objects import build_iso_gameboard, build_object_list, build_hud
 
 # BRAND NEW PATTER JUST DROPPED
 # STORE ALL YOUR CONSTANTS IN THIS CONFIG FILE
@@ -19,11 +19,27 @@ camera_offset = [0, -1 * gameboard_dimensions[0] * unit_height]
 # Rotation integer ranges from 0-3 and tells the game which sprites to render
 rotation_integer = 0
 
+# ------------ CELLS ------------ #
+
 # BUILDING THE GAMEBOARD, and the order to render the gameboard in
 gameboard, cell_render_order = build_iso_gameboard()
 
 # Empty variable to store the value of the cell we are interacting with
 interaction_cell = None
+
+# ------------- HUD ------------- #
+
+# Top bar boxes
+hud_icon_x = 0.07
+hud_icon_y = hud_icon_x * window_x / window_y
+
+# Actual HUD button array
+hud_buttons = build_hud(['terraform', 'construct_path'])
+
+# Dictate which 'mode' the user is in
+user_data = {
+  'mode': 'terraform'
+}
 
 
 # ------- TESTING OBJECT MOVEMENT ------- #
