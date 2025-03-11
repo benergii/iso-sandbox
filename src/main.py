@@ -57,9 +57,9 @@ def main():
   glutDisplayFunc(draw_scene)
   glutSpecialFunc(special_keys)
   glutKeyboardFunc(normal_keys)
-  # glutPassiveMotionFunc(mouse_motion)
-  # glutMouseFunc(mouse_click)
-  # glutMotionFunc(mouse_dragging)
+  glutPassiveMotionFunc(mouse_motion)
+  glutMouseFunc(mouse_click)
+  glutMotionFunc(mouse_dragging)
 
   # Start the loop of the game
   glutMainLoop()
