@@ -19,11 +19,24 @@ camera_offset = [0, -1 * gameboard_dimensions[0] * unit_height]
 # Rotation integer ranges from 0-3 and tells the game which sprites to render
 rotation_integer = 0
 
+# ------------ CELLS ------------ #
+
 # BUILDING THE GAMEBOARD, and the order to render the gameboard in
 gameboard, cell_render_order = build_iso_gameboard()
 
 # Empty variable to store the value of the cell we are interacting with
 interaction_cell = None
+
+# ------------- HUD ------------- #
+
+# Top bar boxes
+hud_icon_x = 0.07
+hud_icon_y = hud_icon_x * window_x / window_y
+
+# Dictate which 'mode' the user is in
+user_data = {
+  'mode': None
+}
 
 
 # ------- TESTING OBJECT MOVEMENT ------- #

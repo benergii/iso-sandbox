@@ -85,3 +85,14 @@ def render_with_dictionary():
       glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], [0, object['height']], config.camera_offset))
       glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], [0, object['height']], config.camera_offset))
       glEnd()
+
+
+def render_hud():
+
+  glColor(1, 1, 1)
+  glBegin(GL_QUADS)
+  glVertex2f(0 - config.hud_icon_x, 1)
+  glVertex2f(0, 1)
+  glVertex2f(0, 1 - config.hud_icon_y)
+  glVertex2f(0 - config.hud_icon_x, 1 - config.hud_icon_y)
+  glEnd()
