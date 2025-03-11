@@ -81,3 +81,22 @@ def build_object_list():
       'lastKnownPosition': translated_points_1[0]
     }
   ]
+
+
+def build_hud(button_names):
+
+  button_dict = {}
+
+  for n in range(len(button_names)):
+
+    x_pos = config.hud_icon_x * n
+
+    button_dict[button_names[n]] = {
+      'buttonName': button_names[n],
+      'v1': (-1 + x_pos, 1 - config.hud_icon_y),
+      'v2': (-1 + x_pos + config.hud_icon_x, 1 - config.hud_icon_y),
+      'v3': (-1 + x_pos + config.hud_icon_x, 1),
+      'v4': (-1 + x_pos, 1)
+    }
+  
+  return button_dict

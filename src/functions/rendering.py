@@ -89,10 +89,20 @@ def render_with_dictionary():
 
 def render_hud():
 
-  glColor(1, 1, 1)
-  glBegin(GL_QUADS)
-  glVertex2f(0 - config.hud_icon_x, 1)
-  glVertex2f(0, 1)
-  glVertex2f(0, 1 - config.hud_icon_y)
-  glVertex2f(0 - config.hud_icon_x, 1 - config.hud_icon_y)
-  glEnd()
+  for button_index in list(config.hud_buttons.keys()):
+
+    button = config.hud_buttons[button_index]
+
+    # Render button background
+    glColor(1, 1, 1)
+    glBegin(GL_QUADS)
+    for n in range(4):
+      glVertex2f(*button[f'v{n + 1}'])
+    glEnd()
+
+    # Render button outline
+    glColor(0.4, 0.4, 0.4)
+    glBegin(GL_LINE_LOOP)
+    for n in range(4):
+      glVertex2f(*button[f'v{n + 1}'])
+    glEnd()
