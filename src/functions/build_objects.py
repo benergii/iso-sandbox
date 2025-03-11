@@ -3,7 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import random
 
-from .tools import iso_translater, cartesian_translater
+from .tools import iso_translater, cartesian_translater, add_vectors
 
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
@@ -46,14 +46,22 @@ def build_iso_gameboard():
 # Below is suuuuper arbitrary, just space-filling to PoC movement
 def build_object_list():
 
+  # I've just designed a random path here, simply to test depth around terraformed tiles
   points_1 = [
-    [5, 5],
-    [5, 6],
-    [6, 6],
-    [6, 5],
-    [11, 5],
-    [11, 11],
-    [5, 11]
+    [0.5, 0.5],
+    [0.5, 3.5],
+    [8.5, 3.5],
+    [8.5, 1.5],
+    [6.5, 1.5],
+    [6.5, 3.5],
+    [10.5, 3.5],
+    [10.5, 10.5],
+    [9.5, 10.5],
+    [9.5, 8.5],
+    [6.5, 8.5],
+    [6.5, 2.5],
+    [0.5, 2.5],
+
   ]
 
   translated_points_1 = []
@@ -61,37 +69,14 @@ def build_object_list():
   for n in points_1:
     translated_points_1.append(iso_translater(*n))
 
-  points_2 = [
-    [11, 5],
-    [11, 11],
-    [5, 11],
-    [5, 5],
-    [5, 6],
-    [6, 6],
-    [6, 5],
-  ]
-
-  points_2 = list(reversed(points_2))
-  
-  translated_points_2 = []
-
-  for n in points_2:
-    translated_points_2.append(iso_translater(*n))
-
   return [
     {
       'name': 'orb',
       'color': (1, 0, 0),
       'path': translated_points_1,
-      'speed': 0.8,
+      'height': config.unit_height,
+      'speed': 0.2,
       'lastKnownSegment': 0,
       'lastKnownPosition': translated_points_1[0]
-    }, {
-      'name': 'orb',
-      'color': (0, 0, 1),
-      'path': translated_points_2,
-      'speed': 1.2,
-      'lastKnownSegment': 0,
-      'lastKnownPosition': translated_points_2[0]
     }
   ]
