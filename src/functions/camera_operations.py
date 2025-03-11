@@ -31,7 +31,10 @@ def rotate_camera(key):
     # ROTATION IS TRICKY - BUT THIS IS HOW IT NEEDS TO BE DONE
     # As it is infinitely better to store the coords as iso in the gameboard var, rather than convert on every frame render
 
-    for cell in config.gameboard:
+    for cell_index in config.cell_render_order:
+
+      # Retrieve the cell from the dictionary using the cell index
+      cell = config.gameboard[cell_index]
       
       # Storing v1 as will be overwriting it in loop
       # Need to deepcopy as taking item from dictionary
@@ -68,8 +71,7 @@ def rotate_camera(key):
     # Update the rotation integer to tell game which sprites to render
     config.rotation_integer = (config.rotation_integer + 1) % 4
     
-    # Now, in order for rendering to work, we need to sort the gameboard array in descending coord order
-    # As we need the farthest cells to render first
-    config.gameboard = sorted(config.gameboard, key = lambda t: (t['v1'][1],t['v1'][0]), reverse = True)
+    # Now, in order for rendering to work, we need to sort the 'render order' array, in descending Y, then descending X within
+    config.cell_render_order = sorted(config.gameboard.keys(), key = lambda t: (config.gameboard[t]['v1'][1], config.gameboard[t]['v1'][0]), reverse = True)
     print('Rotation complete')
     print(f'Now rendering sprites of rotation integer {config.rotation_integer}')
