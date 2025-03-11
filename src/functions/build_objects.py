@@ -82,6 +82,7 @@ def build_object_list():
     }
   ]
 
+# Building a dictionary for the HUD buttons, based on a list of button names
 
 def build_hud(button_names):
 
@@ -100,3 +101,46 @@ def build_hud(button_names):
     }
   
   return button_dict
+
+# Building a dictionary of popup windows, based on a list of popup definitions
+
+def build_popup_windows(popup_definition):
+
+  popup_dict = {}
+
+  for popup in popup_definition:
+
+    popup_name = popup['name']
+
+    popup_dict[popup_name] = {
+      'buttons': []
+    }
+
+    # Need to figure out how many buttons the popup is to have - so as to centre them in the screen
+    n_buttons = len(popup['buttons'])
+    button_starting_x = -1 * n_buttons * config.hud_icon_x / 2
+
+    # For each of the buttons the popup is to have...
+    for button in popup['buttons']:
+
+      # Put them in the dictionary
+      popup_dict[popup_name]['buttons'].append({
+        'name': button,
+        'v1': (button_starting_x, 0.8 - config.hud_icon_y),
+        'v2': (button_starting_x + config.hud_icon_x, 0.8 - config.hud_icon_y),
+        'v3': (button_starting_x + config.hud_icon_x, 0.8),
+        'v4': (button_starting_x, 0.8)
+      })
+
+      # Then indent the x-position, ready for the next one!
+      button_starting_x += config.hud_icon_x
+
+  # The main window the buttons are to sit in - basically just button perimeters with a 0.01 buffer around edges
+  popup_dict[popup_name]['v1'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.79 - config.hud_icon_y)
+  popup_dict[popup_name]['v2'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.79 - config.hud_icon_y)
+  popup_dict[popup_name]['v3'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.81)
+  popup_dict[popup_name]['v4'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.81)
+
+  popup_dict[popup_name]['color'] = (0.8, 0.8, 0.8)
+
+  return popup_dict
