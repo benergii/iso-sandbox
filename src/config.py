@@ -19,8 +19,8 @@ camera_offset = [0, -1 * gameboard_dimensions[0] * unit_height]
 # Rotation integer ranges from 0-3 and tells the game which sprites to render
 rotation_integer = 0
 
-# BUILDING THE GAMEBOARD
-gameboard = build_iso_gameboard()
+# BUILDING THE GAMEBOARD, and the order to render the gameboard in
+gameboard, cell_render_order = build_iso_gameboard()
 
 # Empty variable to store the value of the cell we are interacting with
 interaction_cell = None
