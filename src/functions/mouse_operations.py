@@ -46,6 +46,18 @@ def mouse_click_mechanics(button, state, x, y):
 
     if state == GLUT_DOWN:
       click_position = [gl_x, gl_y]
+
+      # First - are we clicking on a HUD button?
+      for button_index in list(config.hud_buttons.keys()):
+        button = config.hud_buttons[button_index]
+
+        if is_point_in_quad((gl_x, gl_y), button['v1'], button['v2'], button['v3'], button['v4']):
+
+          print(f'Clicked on the {button['buttonName']} button')
+          config.user_data['mode'] = button['buttonName']
+      
+      # Then we handle all the other stuff (at this stage just for terraforming)
+
       is_dragging = True
       print(f'Mouse Clicked at: {click_position}')
     
@@ -62,7 +74,8 @@ def mouse_drag_mechanics(x, y):
   # Normalise mouse coords
   gl_x, gl_y = normalise_pixel_coords(x, y)
 
-  if is_dragging:
+  # Only activate a 'dragging' motion if the mouse has clicked down, and if the user mode is 'terraform'
+  if is_dragging and config.user_data['mode'] == 'terraform':
     
     # Using int(division) instead of floor division, as floor division passes 0 at twice the rate for neg numbers
     units_dragged = int((gl_y - click_position[1]) / config.unit_height) * config.unit_height

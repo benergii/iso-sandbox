@@ -38,7 +38,7 @@ hud_buttons = build_hud(['terraform', 'construct_path'])
 
 # Dictate which 'mode' the user is in
 user_data = {
-  'mode': None
+  'mode': 'terraform'
 }
 
 

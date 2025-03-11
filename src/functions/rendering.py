@@ -94,7 +94,7 @@ def render_hud():
     button = config.hud_buttons[button_index]
 
     # Render button background
-    glColor(1, 1, 1)
+    glColor(1, 0.7, 0.7) if config.user_data['mode'] == button['buttonName'] else glColor(1, 1, 1)
     glBegin(GL_QUADS)
     for n in range(4):
       glVertex2f(*button[f'v{n + 1}'])
