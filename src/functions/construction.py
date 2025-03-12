@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from .tools import add_vectors, find_vector_midpoint
 
 import config
@@ -17,11 +15,30 @@ direction_mapper = [
 ]
 construction_direction = 0
 
+# Logic for not finishing the path - if the user clicks on one of the other HUD buttons before completion
+def kill_the_path_early():
+
+  global temp_cells_constructed_on, temp_path, construction_direction
+
+  # First - clear all the cells which lines were placed on
+  # This pattern was an EXCELLENT idea - good on you for thinking of it early
+  for cell_index in temp_cells_constructed_on:
+
+    config.gameboard[cell_index]['objectOnCell'] = None
+    config.gameboard[cell_index]['objectHeight'] = None
+  
+  # Then just reset all the construction vars back to default
+  temp_cells_constructed_on = []
+  temp_path = []
+  config.construction_cell = None
+  construction_direction = 0
+
+  print('PATH HAS BEEN TERMINATED EARLY')
 
 # Logic for completing the path - for when the construction engine meets up with the start of the path!
 def complete_line_construction():
 
-  global temp_cells_constructed_on, temp_path
+  global temp_cells_constructed_on, temp_path, construction_direction
 
   # Actions for completion of path:
   # 1. write entry to the 'objects' dictionary
@@ -43,6 +60,7 @@ def complete_line_construction():
   temp_cells_constructed_on = []
   config.construction_cell = None
   config.user_data['mode'] = None
+  construction_direction = 0
 
   print('LINE IS NOW COMPLETE')
 

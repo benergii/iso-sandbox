@@ -2,7 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from .construction import place_first_piece_of_line, place_next_piece_of_line
+from .construction import place_first_piece_of_line, place_next_piece_of_line, kill_the_path_early
 from .tools import add_vectors, is_point_in_quad, normalise_pixel_coords
 
 # LOADING IN ALL OUR SETUP VARIABLES
@@ -65,6 +65,9 @@ def mouse_click_mechanics(button, state, x, y):
             config.user_data['mode'] = None
           else:
             config.user_data['mode'] = button['buttonName']
+          
+          # Just dropping this in here - not the right place for it but who cares lol
+          kill_the_path_early()
 
       # --------------------------------- CONSTRUCTION BUTTONS --------------------------------- #
 
