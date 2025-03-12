@@ -68,7 +68,7 @@ popup_definition = [
 popup_windows = build_popup_windows(popup_definition)
 
 # ------- TESTING OBJECT MOVEMENT ------- #
-objects = build_object_list()
+objects = []
 
 
 

@@ -17,6 +17,36 @@ direction_mapper = [
 ]
 construction_direction = 0
 
+
+# Logic for completing the path - for when the construction engine meets up with the start of the path!
+def complete_line_construction():
+
+  global temp_cells_constructed_on, temp_path
+
+  # Actions for completion of path:
+  # 1. write entry to the 'objects' dictionary
+  # 2. clear the temp_cells_constructed_on and temp_path global variables
+  # 3. clear the construction_cell config variable
+  # 4. set the user_data mode to NoneType
+
+  config.objects.append({
+    'name': 'object1',
+    'color': (1, 0, 0),
+    'path': temp_path,
+    'height': config.unit_height,
+    'speed': 0.2,
+    'lastKnownSegment': 0,
+    'lastKnownPosition': temp_path[0]
+  })
+
+  temp_path = []
+  temp_cells_constructed_on = []
+  config.construction_cell = None
+  config.user_data['mode'] = None
+
+  print('LINE IS NOW COMPLETE')
+
+
 def place_first_piece_of_line():
 
   global temp_cells_constructed_on, temp_path
@@ -55,6 +85,8 @@ def place_next_piece_of_line(line_direction):
   global temp_cells_constructed_on, temp_path, construction_direction
 
   if len(temp_cells_constructed_on) != 0:
+
+    
 
     # Line orientation == construction direction for left turns
     # Line orientation == construction direction + 1 for right turns
@@ -98,6 +130,10 @@ def place_next_piece_of_line(line_direction):
     # increment the construction cell to the next one
     config.construction_cell = tuple(add_vectors(config.construction_cell, direction_mapper[construction_direction]))
 
-    print(temp_cells_constructed_on)
-    print(temp_path)
-    print(config.construction_cell)
+    # Is the line complete? If so, let's kill this!
+
+    if (
+      temp_cells_constructed_on[0] == config.construction_cell
+      and construction_direction == config.gameboard[config.construction_cell]['objectOnCell']['orientation']
+    ):
+      complete_line_construction()
