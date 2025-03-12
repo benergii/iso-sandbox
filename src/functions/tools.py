@@ -72,6 +72,14 @@ def get_unit_vector(v1, v2):
   return [(v2[0] - v1[0]) / magnitude, (v2[1] - v1[1]) / magnitude]
 
 
+# Vector midpoint - useful for plotting lines on cells
+def find_vector_midpoint(v1, v2):
+  return [
+    (v1[0] + v2[0]) / 2,
+    (v1[1] + v2[1]) / 2
+  ]
+
+
 # I have no reason to need these - but might be useful
 def add_vectors(v1, v2, v3 = [0, 0], v4 = [0, 0]):
   return [
@@ -85,3 +93,4 @@ def multiply_vectors(v1, v2, v3 = [0, 0]):
     v1[0] * v2[0] * v3[0],
     v1[1] * v2[1] * v3[1]
   ]
+

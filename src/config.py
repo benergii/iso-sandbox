@@ -1,4 +1,8 @@
-from functions.build_objects import build_iso_gameboard, build_object_list, build_hud
+from functions.build_objects import (
+  build_iso_gameboard,
+  build_hud,
+  build_popup_windows
+)
 
 # BRAND NEW PATTER JUST DROPPED
 # STORE ALL YOUR CONSTANTS IN THIS CONFIG FILE
@@ -34,13 +38,40 @@ hud_icon_x = 0.07
 hud_icon_y = hud_icon_x * window_x / window_y
 
 # Actual HUD button array
-hud_buttons = build_hud(['terraform', 'construct_path'])
+hud_buttons = build_hud(['terraform', 'constructPath'])
 
 # Dictate which 'mode' the user is in
 user_data = {
-  'mode': 'terraform'
+  'mode': None
 }
 
+# Popup windows stored in a dict as well (for now)
+
+popup_definition = [
+  {
+    'name': 'constructPath',
+    'buttons': [
+      'left',
+      'straight',
+      'right'
+    ]
+  }, {
+    'name': 'terraform',
+    'buttons': [
+      'increase',
+      'decrease',
+    ]
+  }
+]
+
+popup_windows = build_popup_windows(popup_definition)
 
 # ------- TESTING OBJECT MOVEMENT ------- #
-objects = build_object_list()
+objects = []
+
+
+
+# ----------------------------------- CONSTRUCTION -----------------------------------
+# NB: Might be able to get away w not putting this in the Config, but doing so for now
+
+construction_cell = None

@@ -2,6 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
+from .construction import place_first_piece_of_line, place_next_piece_of_line, kill_the_path_early
 from .tools import add_vectors, is_point_in_quad, normalise_pixel_coords
 
 # LOADING IN ALL OUR SETUP VARIABLES
@@ -24,14 +25,15 @@ def mouse_hover_mechanics(x, y):
     cell = config.gameboard[cell_index]
 
     # Preparing cell vertices for area intersection detection
+    v0 = add_vectors(cell['v0'], [0, cell['height']], config.camera_offset)
     v1 = add_vectors(cell['v1'], [0, cell['height']], config.camera_offset)
     v2 = add_vectors(cell['v2'], [0, cell['height']], config.camera_offset)
     v3 = add_vectors(cell['v3'], [0, cell['height']], config.camera_offset)
-    v4 = add_vectors(cell['v4'], [0, cell['height']], config.camera_offset)
 
-    if is_point_in_quad((gl_x, gl_y), v1, v2, v3, v4):
+    if is_point_in_quad((gl_x, gl_y), v0, v1, v2, v3):
       
-      config.interaction_cell = cell
+      # config.interaction_cell = cell
+      config.interaction_cell = cell_index
 
 # Handle the mouse clicking mechanics
 def mouse_click_mechanics(button, state, x, y):
@@ -46,20 +48,46 @@ def mouse_click_mechanics(button, state, x, y):
 
     if state == GLUT_DOWN:
       click_position = [gl_x, gl_y]
+      print(f'Mouse Clicked at: {click_position}')
+
+      # --------------------------------- HUD BUTTONS --------------------------------- #
 
       # First - are we clicking on a HUD button?
       for button_index in list(config.hud_buttons.keys()):
         button = config.hud_buttons[button_index]
 
-        if is_point_in_quad((gl_x, gl_y), button['v1'], button['v2'], button['v3'], button['v4']):
+        if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
 
           print(f'Clicked on the {button['buttonName']} button')
-          config.user_data['mode'] = button['buttonName']
-      
-      # Then we handle all the other stuff (at this stage just for terraforming)
 
-      is_dragging = True
-      print(f'Mouse Clicked at: {click_position}')
+          # Below allows for toggling on buttons - if you're already in Terraform then exit Terraform
+          if config.user_data['mode'] == button['buttonName']:
+            config.user_data['mode'] = None
+          else:
+            config.user_data['mode'] = button['buttonName']
+          
+          # Just dropping this in here - not the right place for it but who cares lol
+          kill_the_path_early()
+
+      # --------------------------------- CONSTRUCTION BUTTONS --------------------------------- #
+
+      if config.user_data['mode']:
+
+        for button in config.popup_windows[config.user_data['mode']]['buttons']:
+
+          if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
+            place_next_piece_of_line(button['name'])
+
+        # Then we check to see what mode we're in, and perform the respective actions
+        if config.user_data['mode'] == 'constructPath':
+
+          place_first_piece_of_line()
+
+      # ------------------------------------ TERRAFORMING ------------------------------------ #
+
+        elif config.user_data['mode'] == 'terraform':
+        
+          is_dragging = True
     
     elif state == GLUT_UP:
       click_position = None
@@ -84,5 +112,6 @@ def mouse_drag_mechanics(x, y):
     if units_dragged != 0:
 
       # Then update the height of the cell!
-      config.interaction_cell['height'] += units_dragged
+      # config.interaction_cell['height'] += units_dragged
+      config.gameboard[config.interaction_cell]['height'] += units_dragged
       click_position = [gl_x, gl_y]
