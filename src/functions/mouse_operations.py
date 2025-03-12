@@ -2,6 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
+from .construction import place_first_piece_of_line
 from .tools import add_vectors, is_point_in_quad, normalise_pixel_coords
 
 # LOADING IN ALL OUR SETUP VARIABLES
@@ -47,6 +48,7 @@ def mouse_click_mechanics(button, state, x, y):
 
     if state == GLUT_DOWN:
       click_position = [gl_x, gl_y]
+      print(f'Mouse Clicked at: {click_position}')
 
       # First - are we clicking on a HUD button?
       for button_index in list(config.hud_buttons.keys()):
@@ -62,10 +64,14 @@ def mouse_click_mechanics(button, state, x, y):
           else:
             config.user_data['mode'] = button['buttonName']
       
-      # Then we handle all the other stuff (at this stage just for terraforming)
+      # Then we check to see what mode we're in, and perform the respective actions
+      if config.user_data['mode'] == 'constructPath':
 
-      is_dragging = True
-      print(f'Mouse Clicked at: {click_position}')
+        place_first_piece_of_line()
+
+      elif config.user_data['mode'] == 'terraform':
+        
+        is_dragging = True
     
     elif state == GLUT_UP:
       click_position = None

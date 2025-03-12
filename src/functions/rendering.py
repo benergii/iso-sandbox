@@ -4,7 +4,7 @@ from OpenGL.GLU import *
 
 import config
 
-from .tools import add_vectors
+from .tools import add_vectors, find_vector_midpoint
 
 # ------------------------------------------ #
 
@@ -70,6 +70,21 @@ def render_with_dictionary():
         glVertex2f(*add_vectors(cell[f'v{n + 1}'], [0, cell['height']], config.camera_offset))
       glEnd()
 
+      # OBJECT RENDERING
+      # For now just going to render straight lines...
+      if cell['objectOnCell']:
+
+        if cell['objectOnCell']['type'] == 'line':
+          start_vertex = find_vector_midpoint(cell['v4'], cell['v1'])
+          end_vertex = find_vector_midpoint(cell['v2'], cell['v3'])
+
+          glColor(0, 0, 1)
+          glLineWidth(3)
+          glBegin(GL_LINE_LOOP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glEnd()
+
     # Else, if they're an object...
     elif element['type'] == 1:
 
@@ -102,6 +117,7 @@ def render_hud():
 
     # Render button outline
     glColor(0.4, 0.4, 0.4)
+    glLineWidth(0.5)
     glBegin(GL_LINE_LOOP)
     for n in range(4):
       glVertex2f(*button[f'v{n + 1}'])
@@ -132,6 +148,7 @@ def render_popup_windows():
       glEnd()
 
       glColor(0.4, 0.4, 0.4)
+      glLineWidth(0.5)
       glBegin(GL_LINE_LOOP)
       for n in range(4):
         glVertex2f(*button[f'v{n + 1}'])
