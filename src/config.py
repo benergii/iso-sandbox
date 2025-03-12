@@ -1,6 +1,5 @@
 from functions.build_objects import (
   build_iso_gameboard,
-  build_object_list,
   build_hud,
   build_popup_windows
 )

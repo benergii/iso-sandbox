@@ -66,7 +66,7 @@ def place_first_piece_of_line():
     temp_cells_constructed_on.append(config.interaction_cell)
 
     # Write first coordinate to the temp object path
-    temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cell]['v3'], config.gameboard[config.interaction_cell]['v0']))
+    temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cell]['v2'], config.gameboard[config.interaction_cell]['v0']))
 
     # Now dictate that the next cell being constructed on is x/y +- 1 away from the interaction cell
     config.construction_cell = tuple(add_vectors(config.interaction_cell, direction_mapper[construction_direction]))
@@ -123,7 +123,7 @@ def place_next_piece_of_line(line_direction):
     temp_cells_constructed_on.append(config.construction_cell)
 
     # Adding the new point to the temp path
-    temp_path.append(find_vector_midpoint(config.gameboard[config.construction_cell]['v3'], config.gameboard[config.construction_cell]['v0']))
+    temp_path.append(find_vector_midpoint(config.gameboard[config.construction_cell]['v2'], config.gameboard[config.construction_cell]['v0']))
 
     print(config.gameboard[config.construction_cell])
 
