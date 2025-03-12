@@ -28,17 +28,43 @@ def place_first_piece_of_line():
     temp_cells_constructed_on.append(config.interaction_cell)
 
     # Write first coordinate to the temp object path
-    v4 = config.gameboard[config.interaction_cell]['v4']
-    v1 = config.gameboard[config.interaction_cell]['v1']
+    v4 = config.gameboard[config.interaction_cell]['v3']
+    v1 = config.gameboard[config.interaction_cell]['v0']
     temp_path.append([
       (v4[0] + v1[0]) / 2,
       (v4[1] + v1[1]) / 2
     ])
 
     # Now dictate that the next cell being constructed on is x + 1 away from the interaction cell
-    config.construction_cell = deepcopy(add_vectors(config.interaction_cell, (1, 0)))
+    config.construction_cell = tuple(add_vectors(config.interaction_cell, (1, 0)))
 
     # Let's see if any of that functionally worked...
     print(config.gameboard[config.interaction_cell])
     print(temp_cells_constructed_on)
     print(temp_path)
+    print(f'Interaction Cell index is: {config.interaction_cell}')
+    print(f'Construction Cell index is: {config.construction_cell}')
+
+
+# Pretty much the same pattern as above but with the construction_cell being used as reference rather than interaction_cell
+def place_next_piece_of_line():
+
+  global temp_cells_constructed_on, temp_path
+
+  if len(temp_cells_constructed_on) != 0:
+
+    config.gameboard[config.construction_cell]['objectOnCell'] = {
+      'type': 'line',
+      'orientation': 1
+    }
+
+    config.gameboard[config.construction_cell]['objectHeight'] = 0
+
+    temp_cells_constructed_on.append(config.construction_cell)
+
+    config.construction_cell = tuple(add_vectors(config.construction_cell, [1, 0]))
+
+    print(config.gameboard[config.construction_cell])
+    print(temp_cells_constructed_on)
+    print(temp_path)
+    print(config.construction_cell)

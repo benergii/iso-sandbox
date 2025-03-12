@@ -2,7 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from .construction import place_first_piece_of_line
+from .construction import place_first_piece_of_line, place_next_piece_of_line
 from .tools import add_vectors, is_point_in_quad, normalise_pixel_coords
 
 # LOADING IN ALL OUR SETUP VARIABLES
@@ -50,6 +50,8 @@ def mouse_click_mechanics(button, state, x, y):
       click_position = [gl_x, gl_y]
       print(f'Mouse Clicked at: {click_position}')
 
+      # --------------------------------- HUD BUTTONS --------------------------------- #
+
       # First - are we clicking on a HUD button?
       for button_index in list(config.hud_buttons.keys()):
         button = config.hud_buttons[button_index]
@@ -63,6 +65,16 @@ def mouse_click_mechanics(button, state, x, y):
             config.user_data['mode'] = None
           else:
             config.user_data['mode'] = button['buttonName']
+
+      # --------------------------------- CONSTRUCTION BUTTONS --------------------------------- #
+
+      if config.user_data['mode']:
+        
+        # Just going to write in for the 'forward' button for now - to P the C if you will
+        button = config.popup_windows[config.user_data['mode']]['buttons'][1]
+
+        if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
+          place_next_piece_of_line()
       
       # Then we check to see what mode we're in, and perform the respective actions
       if config.user_data['mode'] == 'constructPath':
