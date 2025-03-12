@@ -75,7 +75,7 @@ def render_with_dictionary():
 
       # Rendering the grid around the cell
       glColor(0, 0, 1, 0.5)
-      glLineWidth(3) if config.interaction_cell == element['key'] else glLineWidth(0.5) # Thicker grid if mouse hover
+      glLineWidth(3) if element['key'] in [config.construction_cell, config.interaction_cell] else glLineWidth(0.5) # Thicker grid if mouse hover
       glBegin(GL_LINE_LOOP)
       for n in range(4):
         glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
