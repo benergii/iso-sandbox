@@ -135,12 +135,12 @@ def build_popup_windows(popup_definition):
       # Then indent the x-position, ready for the next one!
       button_starting_x += config.hud_icon_x
 
-  # The main window the buttons are to sit in - basically just button perimeters with a 0.01 buffer around edges
-  popup_dict[popup_name]['v1'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.79 - config.hud_icon_y)
-  popup_dict[popup_name]['v2'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.79 - config.hud_icon_y)
-  popup_dict[popup_name]['v3'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.81)
-  popup_dict[popup_name]['v4'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.81)
+    # The main window the buttons are to sit in - basically just button perimeters with a 0.01 buffer around edges
+    popup_dict[popup_name]['v1'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.79 - config.hud_icon_y)
+    popup_dict[popup_name]['v2'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.79 - config.hud_icon_y)
+    popup_dict[popup_name]['v3'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.81)
+    popup_dict[popup_name]['v4'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.81)
 
-  popup_dict[popup_name]['color'] = (0.8, 0.8, 0.8)
+    popup_dict[popup_name]['color'] = (0.8, 0.8, 0.8)
 
   return popup_dict

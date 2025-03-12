@@ -43,7 +43,7 @@ hud_buttons = build_hud(['terraform', 'constructPath'])
 
 # Dictate which 'mode' the user is in
 user_data = {
-  'mode': 'terraform'
+  'mode': None
 }
 
 # Popup windows stored in a dict as well (for now)
@@ -55,6 +55,12 @@ popup_definition = [
       'left',
       'forward',
       'right'
+    ]
+  }, {
+    'name': 'terraform',
+    'buttons': [
+      'increase',
+      'decrease',
     ]
   }
 ]

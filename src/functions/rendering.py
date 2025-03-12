@@ -110,9 +110,8 @@ def render_hud():
 
 
 def render_popup_windows():
-
-  # So far am just building a popup for the 'constructPath' mode - but this can be generalised
-  if config.user_data['mode'] == 'constructPath':
+  
+  if config.user_data['mode'] != None:
 
     window_to_render = config.popup_windows[config.user_data['mode']]
 
@@ -124,23 +123,16 @@ def render_popup_windows():
     glEnd()
 
     # Render each button + outline on top of the panel
-    # Oh GOD this is painful lol
     for button in config.popup_windows[config.user_data['mode']]['buttons']:
 
       glColor(1, 1, 1)
       glBegin(GL_QUADS)
       for n in range(4):
-        glVertex2f(*button['v1'])
-        glVertex2f(*button['v2'])
-        glVertex2f(*button['v3'])
-        glVertex2f(*button['v4'])
+        glVertex2f(*button[f'v{n + 1}'])
       glEnd()
 
       glColor(0.4, 0.4, 0.4)
       glBegin(GL_LINE_LOOP)
       for n in range(4):
-        glVertex2f(*button['v1'])
-        glVertex2f(*button['v2'])
-        glVertex2f(*button['v3'])
-        glVertex2f(*button['v4'])
+        glVertex2f(*button[f'v{n + 1}'])
       glEnd()
