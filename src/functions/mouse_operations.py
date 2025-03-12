@@ -31,7 +31,8 @@ def mouse_hover_mechanics(x, y):
 
     if is_point_in_quad((gl_x, gl_y), v1, v2, v3, v4):
       
-      config.interaction_cell = cell
+      # config.interaction_cell = cell
+      config.interaction_cell = cell_index
 
 # Handle the mouse clicking mechanics
 def mouse_click_mechanics(button, state, x, y):
@@ -89,5 +90,6 @@ def mouse_drag_mechanics(x, y):
     if units_dragged != 0:
 
       # Then update the height of the cell!
-      config.interaction_cell['height'] += units_dragged
+      # config.interaction_cell['height'] += units_dragged
+      config.gameboard[config.interaction_cell]['height'] += units_dragged
       click_position = [gl_x, gl_y]
