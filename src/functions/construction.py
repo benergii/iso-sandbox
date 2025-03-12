@@ -79,19 +79,25 @@ def place_next_piece_of_line(line_direction):
       line_type = 'line'
       line_orientation = construction_direction
 
+    # Adding the line object to the cell
     config.gameboard[config.construction_cell]['objectOnCell'] = {
       'type': line_type,
       'orientation': line_orientation
     }
-
+    # Specifying the height of the line object - 0 as placeholder
     config.gameboard[config.construction_cell]['objectHeight'] = 0
 
+    # Continuing to add to the list of cells constructed on - so we can wipe them out if exit partway through
     temp_cells_constructed_on.append(config.construction_cell)
+
+    # Adding the new point to the temp path
+    temp_path.append(find_vector_midpoint(config.gameboard[config.construction_cell]['v3'], config.gameboard[config.construction_cell]['v0']))
+
+    print(config.gameboard[config.construction_cell])
 
     # increment the construction cell to the next one
     config.construction_cell = tuple(add_vectors(config.construction_cell, direction_mapper[construction_direction]))
 
-    print(config.gameboard[config.construction_cell])
     print(temp_cells_constructed_on)
     print(temp_path)
     print(config.construction_cell)
