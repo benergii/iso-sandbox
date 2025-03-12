@@ -45,6 +45,8 @@ def render_with_dictionary():
     # If they're a cell...
     if element['type'] == 0:
       
+      # ------------------ GAME BOARD RENDERING (CELLS) ------------------ #
+
       # Then render a cell!
       cell = config.gameboard[element['key']]
 
@@ -81,7 +83,8 @@ def render_with_dictionary():
         glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
       glEnd()
 
-      # OBJECT RENDERING
+      # ------------------ STATIC OBJECT RENDERING ------------------ #
+
       # For now just going to render straight lines...
       if cell['objectOnCell']:
 
@@ -94,6 +97,7 @@ def render_with_dictionary():
           start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
           end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
 
+          # Drawing the line
           glColor(0, 0, 1)
           glLineWidth(3)
           glBegin(GL_LINE_LOOP)
@@ -104,6 +108,9 @@ def render_with_dictionary():
         elif cell['objectOnCell']['type'] == 'turn':
 
           orientation = cell['objectOnCell']['orientation']
+
+          # Doing the same for the turns as the straight lines - though they're about a million times more complex lol
+          # So gonna write an index into the comments here to justify the madness inside the find_midpoint function calls
 
           # ORIENTATION INDEX:
           # 0: (1, 0) -> (0, 1)     || mid(v3, v0) & mid(v2, v3)
@@ -117,6 +124,7 @@ def render_with_dictionary():
           # Also need the midpoint - in order to do the 'turn' properly
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
 
+          # Drawing the corner
           glColor(0, 0, 1)
           glLineWidth(3)
           glBegin(GL_LINE_STRIP)

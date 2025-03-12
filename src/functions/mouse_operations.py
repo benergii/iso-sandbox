@@ -82,9 +82,9 @@ def mouse_click_mechanics(button, state, x, y):
 
       # ------------------------------------ TERRAFORMING ------------------------------------ #
 
-      elif config.user_data['mode'] == 'terraform':
+        elif config.user_data['mode'] == 'terraform':
         
-        is_dragging = True
+          is_dragging = True
     
     elif state == GLUT_UP:
       click_position = None
