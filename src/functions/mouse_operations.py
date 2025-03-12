@@ -25,12 +25,12 @@ def mouse_hover_mechanics(x, y):
     cell = config.gameboard[cell_index]
 
     # Preparing cell vertices for area intersection detection
+    v0 = add_vectors(cell['v0'], [0, cell['height']], config.camera_offset)
     v1 = add_vectors(cell['v1'], [0, cell['height']], config.camera_offset)
     v2 = add_vectors(cell['v2'], [0, cell['height']], config.camera_offset)
     v3 = add_vectors(cell['v3'], [0, cell['height']], config.camera_offset)
-    v4 = add_vectors(cell['v4'], [0, cell['height']], config.camera_offset)
 
-    if is_point_in_quad((gl_x, gl_y), v1, v2, v3, v4):
+    if is_point_in_quad((gl_x, gl_y), v0, v1, v2, v3):
       
       # config.interaction_cell = cell
       config.interaction_cell = cell_index
@@ -54,7 +54,7 @@ def mouse_click_mechanics(button, state, x, y):
       for button_index in list(config.hud_buttons.keys()):
         button = config.hud_buttons[button_index]
 
-        if is_point_in_quad((gl_x, gl_y), button['v1'], button['v2'], button['v3'], button['v4']):
+        if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
 
           print(f'Clicked on the {button['buttonName']} button')
 

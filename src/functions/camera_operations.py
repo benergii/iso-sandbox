@@ -1,7 +1,6 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-from copy import deepcopy
 
 from .tools import rotate_coordinates
 
@@ -35,22 +34,13 @@ def rotate_camera(key):
 
       # Retrieve the cell from the dictionary using the cell index
       cell = config.gameboard[cell_index]
-      
-      # Storing v1 as will be overwriting it in loop
-      # Need to deepcopy as taking item from dictionary
-      v1 = deepcopy(cell['v1'])
-      for n in [4, 3, 2, 1]:
 
-        iso_x, iso_y = rotate_coordinates(*v1) if n == 1 else rotate_coordinates(*cell[f'v{n}'])
+      for n in range(4):
 
-        # NOW WE WRITE BACK TO THE CELL
-        # Using this 'if' condition as 4 % 4 = 0. We need it to be 4
-        if n == 3:
-          cell['v4'][0] = iso_x
-          cell['v4'][1] = iso_y
-        else:
-          cell[f'v{(n + 1) % 4}'][0] = iso_x
-          cell[f'v{(n + 1) % 4}'][1] = iso_y
+        iso_x, iso_y = rotate_coordinates(*cell[f'v{n}'])
+
+        cell[f'v{n}'][0] = iso_x
+        cell[f'v{n}'][1] = iso_y
     
     # Also need to rotate all the object paths and current positions
     for object in config.objects:
@@ -72,6 +62,6 @@ def rotate_camera(key):
     config.rotation_integer = (config.rotation_integer + 1) % 4
     
     # Now, in order for rendering to work, we need to sort the 'render order' array, in descending Y, then descending X within
-    config.cell_render_order = sorted(config.gameboard.keys(), key = lambda t: (config.gameboard[t]['v1'][1], config.gameboard[t]['v1'][0]), reverse = True)
+    config.cell_render_order = sorted(config.gameboard.keys(), key = lambda t: (config.gameboard[t]['v0'][1], config.gameboard[t]['v0'][0]), reverse = True)
     print('Rotation complete')
     print(f'Now rendering sprites of rotation integer {config.rotation_integer}')

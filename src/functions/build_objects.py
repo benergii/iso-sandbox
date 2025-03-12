@@ -28,10 +28,10 @@ def build_iso_gameboard():
       v4_x, v4_y = iso_translater(x, y + 1)
 
       cells[(x, y)] = {
-        'v1': [v1_x, v1_y],
-        'v2': [v2_x, v2_y],
-        'v3': [v3_x, v3_y],
-        'v4': [v4_x, v4_y],
+        'v0': [v1_x, v1_y],
+        'v1': [v2_x, v2_y],
+        'v2': [v3_x, v3_y],
+        'v3': [v4_x, v4_y],
         'height': config.unit_height,
         'color': (1, 1, 1 / (y + 0.0001)),
         'objectOnCell': None,
@@ -94,10 +94,10 @@ def build_hud(button_names):
 
     button_dict[button_names[n]] = {
       'buttonName': button_names[n],
-      'v1': (-1 + x_pos, 1 - config.hud_icon_y),
-      'v2': (-1 + x_pos + config.hud_icon_x, 1 - config.hud_icon_y),
-      'v3': (-1 + x_pos + config.hud_icon_x, 1),
-      'v4': (-1 + x_pos, 1)
+      'v0': (-1 + x_pos, 1 - config.hud_icon_y),
+      'v1': (-1 + x_pos + config.hud_icon_x, 1 - config.hud_icon_y),
+      'v2': (-1 + x_pos + config.hud_icon_x, 1),
+      'v3': (-1 + x_pos, 1)
     }
   
   return button_dict
@@ -126,20 +126,20 @@ def build_popup_windows(popup_definition):
       # Put them in the dictionary
       popup_dict[popup_name]['buttons'].append({
         'name': button,
-        'v1': (button_starting_x, 0.8 - config.hud_icon_y),
-        'v2': (button_starting_x + config.hud_icon_x, 0.8 - config.hud_icon_y),
-        'v3': (button_starting_x + config.hud_icon_x, 0.8),
-        'v4': (button_starting_x, 0.8)
+        'v0': (button_starting_x, 0.8 - config.hud_icon_y),
+        'v1': (button_starting_x + config.hud_icon_x, 0.8 - config.hud_icon_y),
+        'v2': (button_starting_x + config.hud_icon_x, 0.8),
+        'v3': (button_starting_x, 0.8)
       })
 
       # Then indent the x-position, ready for the next one!
       button_starting_x += config.hud_icon_x
 
     # The main window the buttons are to sit in - basically just button perimeters with a 0.01 buffer around edges
-    popup_dict[popup_name]['v1'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.79 - config.hud_icon_y)
-    popup_dict[popup_name]['v2'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.79 - config.hud_icon_y)
-    popup_dict[popup_name]['v3'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.81)
-    popup_dict[popup_name]['v4'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.81)
+    popup_dict[popup_name]['v0'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.79 - config.hud_icon_y)
+    popup_dict[popup_name]['v1'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.79 - config.hud_icon_y)
+    popup_dict[popup_name]['v2'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.81)
+    popup_dict[popup_name]['v3'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.81)
 
     popup_dict[popup_name]['color'] = (0.8, 0.8, 0.8)
 
