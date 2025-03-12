@@ -53,7 +53,7 @@ popup_definition = [
     'name': 'constructPath',
     'buttons': [
       'left',
-      'forward',
+      'straight',
       'right'
     ]
   }, {

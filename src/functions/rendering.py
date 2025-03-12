@@ -45,6 +45,8 @@ def render_with_dictionary():
     # If they're a cell...
     if element['type'] == 0:
       
+      # ------------------ GAME BOARD RENDERING (CELLS) ------------------ #
+
       # Then render a cell!
       cell = config.gameboard[element['key']]
 
@@ -81,18 +83,53 @@ def render_with_dictionary():
         glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
       glEnd()
 
-      # OBJECT RENDERING
+      # ------------------ STATIC OBJECT RENDERING ------------------ #
+
       # For now just going to render straight lines...
       if cell['objectOnCell']:
 
         if cell['objectOnCell']['type'] == 'line':
-          start_vertex = find_vector_midpoint(cell['v3'], cell['v0'])
-          end_vertex = find_vector_midpoint(cell['v1'], cell['v2'])
 
+          # Getting the orientation of the line
+          orientation = cell['objectOnCell']['orientation']
+
+          # Dynamically pulling out the required vertices for the line, as per orientation
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
+
+          # Drawing the line
           glColor(0, 0, 1)
           glLineWidth(3)
           glBegin(GL_LINE_LOOP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glEnd()
+        
+        elif cell['objectOnCell']['type'] == 'turn':
+
+          orientation = cell['objectOnCell']['orientation']
+
+          # Doing the same for the turns as the straight lines - though they're about a million times more complex lol
+          # So gonna write an index into the comments here to justify the madness inside the find_midpoint function calls
+
+          # ORIENTATION INDEX:
+          # 0: (1, 0) -> (0, 1)     || mid(v3, v0) & mid(v2, v3)
+          # 1: (0, 1) -> (-1, 0)    || mid(v0, v1) & mid(v3, v0)
+          # 2: (-1, 0) -> (0, -1)   || mid(v1, v2) & mid(v0, v1)
+          # 3: (0, -1) -> (1, 0)    || mid(v2, v3) & mid(v1, v2)
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          end_vertex = find_vector_midpoint(cell[f'v{(2 + orientation) % 4}'], cell[f'v{(3 + orientation) % 4}'])
+
+          # Also need the midpoint - in order to do the 'turn' properly
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+
+          # Drawing the corner
+          glColor(0, 0, 1)
+          glLineWidth(3)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
           glVertex2f(*add_vectors(end_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
           glEnd()
 
