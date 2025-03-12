@@ -69,3 +69,10 @@ popup_windows = build_popup_windows(popup_definition)
 
 # ------- TESTING OBJECT MOVEMENT ------- #
 objects = build_object_list()
+
+
+
+# ----------------------------------- CONSTRUCTION -----------------------------------
+# NB: Might be able to get away w not putting this in the Config, but doing so for now
+
+construction_cell = None
