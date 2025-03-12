@@ -1,6 +1,5 @@
 from functions.build_objects import (
   build_iso_gameboard,
-  build_object_list,
   build_hud,
   build_popup_windows
 )
@@ -68,7 +67,7 @@ popup_definition = [
 popup_windows = build_popup_windows(popup_definition)
 
 # ------- TESTING OBJECT MOVEMENT ------- #
-objects = build_object_list()
+objects = []
 
 
 
