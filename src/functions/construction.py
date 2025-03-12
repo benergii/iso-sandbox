@@ -50,7 +50,7 @@ def place_first_piece_of_line():
 
 
 # Pretty much the same pattern as above but with the construction_cell being used as reference rather than interaction_cell
-def place_next_piece_of_line(line_type, line_direction):
+def place_next_piece_of_line(line_direction):
 
   global temp_cells_constructed_on, temp_path, construction_direction
 
@@ -63,17 +63,20 @@ def place_next_piece_of_line(line_type, line_direction):
     # Worst description of that ever lmao, but draw it out on paper if you ever forget - that's how I just figured it out
 
     if line_direction == 'left':
+      line_type = 'turn'
       line_orientation = construction_direction
       # Update the construction direction to reflect the direction provided in function
       construction_direction = (construction_direction + 1) % 4
 
     elif line_direction == 'right':
+      line_type = 'turn'
       line_orientation = (1 + construction_direction) % 4
       # Update the construction direction to reflect the direction provided in function
       construction_direction = (construction_direction - 1) % 4
 
     # else - drawing a straight line, which is trivially of orientation == direction
     else:
+      line_type = 'line'
       line_orientation = construction_direction
 
     config.gameboard[config.construction_cell]['objectOnCell'] = {
