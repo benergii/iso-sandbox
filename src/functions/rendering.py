@@ -16,11 +16,14 @@ def render_with_dictionary():
   # And also a 'key' which we use to retrieve them from their relevant list/dicts
 
   # Cells are in a dict - so follow this pattern
-  # BTW - not 100% sure why I used v2 here (maybe because highest point of the cell?)
+  
+  # NB: need to obtain the highest vertex of the cell, so use base-4 arithmetic to cycle in reverse direction to rotation
+  highest_vertex = (2 - config.rotation_integer) % 4
+
   all_elements = [{
     'type': 0,
     'key': n,
-    'coord': config.gameboard[n]['v2']
+    'coord': config.gameboard[n][f'v{highest_vertex}']
     } for n in config.cell_render_order
   ]
 
