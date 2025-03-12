@@ -16,11 +16,11 @@ def render_with_dictionary():
   # And also a 'key' which we use to retrieve them from their relevant list/dicts
 
   # Cells are in a dict - so follow this pattern
-  # BTW - not 100% sure why I used v3 here (maybe because highest point of the cell?)
+  # BTW - not 100% sure why I used v2 here (maybe because highest point of the cell?)
   all_elements = [{
     'type': 0,
     'key': n,
-    'coord': config.gameboard[n]['v3']
+    'coord': config.gameboard[n]['v2']
     } for n in config.cell_render_order
   ]
 
@@ -46,20 +46,28 @@ def render_with_dictionary():
       cell = config.gameboard[element['key']]
 
       # Rendering the walls of each cell
+      # Vertices need to cycle depending on which point of rotation we are at
+      # So doing some modular stuff to account for that
+      vertex_order = [
+        (3 - config.rotation_integer) % 4,
+        (0 - config.rotation_integer) % 4,
+        (1 - config.rotation_integer) % 4
+      ]
+
       glColor(0.5, 0.5, 0.5)
       glBegin(GL_POLYGON)
-      glVertex2f(*add_vectors(cell['v4'], [0, cell['height']], config.camera_offset))
-      glVertex2f(*add_vectors(cell['v4'], config.camera_offset))
-      glVertex2f(*add_vectors(cell['v1'], config.camera_offset))
-      glVertex2f(*add_vectors(cell['v2'], config.camera_offset))
-      glVertex2f(*add_vectors(cell['v2'], [0, cell['height']], config.camera_offset))
+      glVertex2f(*add_vectors(cell[f'v{vertex_order[0]}'], [0, cell['height']], config.camera_offset))
+      glVertex2f(*add_vectors(cell[f'v{vertex_order[0]}'], config.camera_offset))
+      glVertex2f(*add_vectors(cell[f'v{vertex_order[1]}'], config.camera_offset))
+      glVertex2f(*add_vectors(cell[f'v{vertex_order[2]}'], config.camera_offset))
+      glVertex2f(*add_vectors(cell[f'v{vertex_order[2]}'], [0, cell['height']], config.camera_offset))
       glEnd()
 
       # Rendering the actual cell surface
       glColor(*cell['color'])
       glBegin(GL_QUADS)
       for n in range(4):
-        glVertex2f(*add_vectors(cell[f'v{n + 1}'], [0, cell['height']], config.camera_offset))
+        glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
       glEnd()
 
       # Rendering the grid around the cell
@@ -67,7 +75,7 @@ def render_with_dictionary():
       glLineWidth(3) if config.interaction_cell == element['key'] else glLineWidth(0.5) # Thicker grid if mouse hover
       glBegin(GL_LINE_LOOP)
       for n in range(4):
-        glVertex2f(*add_vectors(cell[f'v{n + 1}'], [0, cell['height']], config.camera_offset))
+        glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
       glEnd()
 
       # OBJECT RENDERING
@@ -75,8 +83,8 @@ def render_with_dictionary():
       if cell['objectOnCell']:
 
         if cell['objectOnCell']['type'] == 'line':
-          start_vertex = find_vector_midpoint(cell['v4'], cell['v1'])
-          end_vertex = find_vector_midpoint(cell['v2'], cell['v3'])
+          start_vertex = find_vector_midpoint(cell['v3'], cell['v0'])
+          end_vertex = find_vector_midpoint(cell['v1'], cell['v2'])
 
           glColor(0, 0, 1)
           glLineWidth(3)
@@ -112,7 +120,7 @@ def render_hud():
     glColor(1, 0.7, 0.7) if config.user_data['mode'] == button['buttonName'] else glColor(1, 1, 1)
     glBegin(GL_QUADS)
     for n in range(4):
-      glVertex2f(*button[f'v{n + 1}'])
+      glVertex2f(*button[f'v{n}'])
     glEnd()
 
     # Render button outline
@@ -120,7 +128,7 @@ def render_hud():
     glLineWidth(0.5)
     glBegin(GL_LINE_LOOP)
     for n in range(4):
-      glVertex2f(*button[f'v{n + 1}'])
+      glVertex2f(*button[f'v{n}'])
     glEnd()
 
 
@@ -135,7 +143,7 @@ def render_popup_windows():
     glColor(window_to_render['color'])
     glBegin(GL_QUADS)
     for n in range(4):
-      glVertex2f(*window_to_render[f'v{n + 1}'])
+      glVertex2f(*window_to_render[f'v{n}'])
     glEnd()
 
     # Render each button + outline on top of the panel
@@ -144,12 +152,12 @@ def render_popup_windows():
       glColor(1, 1, 1)
       glBegin(GL_QUADS)
       for n in range(4):
-        glVertex2f(*button[f'v{n + 1}'])
+        glVertex2f(*button[f'v{n}'])
       glEnd()
 
       glColor(0.4, 0.4, 0.4)
       glLineWidth(0.5)
       glBegin(GL_LINE_LOOP)
       for n in range(4):
-        glVertex2f(*button[f'v{n + 1}'])
+        glVertex2f(*button[f'v{n}'])
       glEnd()
