@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from .tools import add_vectors
+from .tools import add_vectors, find_vector_midpoint
 
 import config
 
@@ -27,7 +27,7 @@ def place_first_piece_of_line():
     # Add a line object to the cell being clicked on
     config.gameboard[config.interaction_cell]['objectOnCell'] = {
       'type': 'line',
-      'orientation': 1
+      'orientation': construction_direction
     }
 
     config.gameboard[config.interaction_cell]['objectHeight'] = 0
@@ -36,12 +36,7 @@ def place_first_piece_of_line():
     temp_cells_constructed_on.append(config.interaction_cell)
 
     # Write first coordinate to the temp object path
-    v4 = config.gameboard[config.interaction_cell]['v3']
-    v1 = config.gameboard[config.interaction_cell]['v0']
-    temp_path.append([
-      (v4[0] + v1[0]) / 2,
-      (v4[1] + v1[1]) / 2
-    ])
+    temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cell]['v3'], config.gameboard[config.interaction_cell]['v0']))
 
     # Now dictate that the next cell being constructed on is x/y +- 1 away from the interaction cell
     config.construction_cell = tuple(add_vectors(config.interaction_cell, direction_mapper[construction_direction]))
@@ -65,16 +60,18 @@ def place_next_piece_of_line(line_type, line_direction):
     # Line orientation == construction direction + 1 for right turns
     # On the assumption that direction(0) = (1, 0) and rotates counterclockwise per each increment
     # And orientation of the corner made by direction(0) -> direction(1) is also orientation(0), and also rotates counterclockwise
-    # Worst direction of that ever lmao, but draw it out on paper if you ever forget - that's how I just figured it out
+    # Worst description of that ever lmao, but draw it out on paper if you ever forget - that's how I just figured it out
 
     if line_direction == 'left':
       line_orientation = construction_direction
       # Update the construction direction to reflect the direction provided in function
       construction_direction = (construction_direction + 1) % 4
+
     elif line_direction == 'right':
       line_orientation = (1 + construction_direction) % 4
       # Update the construction direction to reflect the direction provided in function
       construction_direction = (construction_direction - 1) % 4
+
     # else - drawing a straight line, which is trivially of orientation == direction
     else:
       line_orientation = construction_direction

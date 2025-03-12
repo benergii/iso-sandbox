@@ -95,6 +95,30 @@ def render_with_dictionary():
           glVertex2f(*add_vectors(start_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
           glVertex2f(*add_vectors(end_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
           glEnd()
+        
+        elif cell['objectOnCell']['type'] == 'turn':
+
+          orientation = cell['objectOnCell']['orientation']
+
+          # ORIENTATION INDEX:
+          # 0: (1, 0) -> (0, 1)     || mid(v3, v0) & mid(v2, v3)
+          # 1: (0, 1) -> (-1, 0)    || mid(v0, v1) & mid(v3, v0)
+          # 2: (-1, 0) -> (0, -1)   || mid(v1, v2) & mid(v0, v1)
+          # 3: (0, -1) -> (1, 0)    || mid(v2, v3) & mid(v1, v2)
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          end_vertex = find_vector_midpoint(cell[f'v{(2 + orientation) % 4}'], cell[f'v{(3 + orientation) % 4}'])
+
+          # Also need the midpoint - in order to do the 'turn' properly
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+
+          glColor(0, 0, 1)
+          glLineWidth(3)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glEnd()
 
     # Else, if they're an object...
     elif element['type'] == 1:

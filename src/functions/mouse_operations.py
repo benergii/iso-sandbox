@@ -74,7 +74,7 @@ def mouse_click_mechanics(button, state, x, y):
         button = config.popup_windows[config.user_data['mode']]['buttons'][1]
 
         if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
-          place_next_piece_of_line('line', 'right')
+          place_next_piece_of_line('turn', 'left')
 
       # Then we check to see what mode we're in, and perform the respective actions
       if config.user_data['mode'] == 'constructPath':
