@@ -106,3 +106,33 @@ def render_hud():
     for n in range(4):
       glVertex2f(*button[f'v{n + 1}'])
     glEnd()
+
+
+
+def render_popup_windows():
+  
+  if config.user_data['mode'] != None:
+
+    window_to_render = config.popup_windows[config.user_data['mode']]
+
+    # Render the panel for the buttons to sit on
+    glColor(window_to_render['color'])
+    glBegin(GL_QUADS)
+    for n in range(4):
+      glVertex2f(*window_to_render[f'v{n + 1}'])
+    glEnd()
+
+    # Render each button + outline on top of the panel
+    for button in config.popup_windows[config.user_data['mode']]['buttons']:
+
+      glColor(1, 1, 1)
+      glBegin(GL_QUADS)
+      for n in range(4):
+        glVertex2f(*button[f'v{n + 1}'])
+      glEnd()
+
+      glColor(0.4, 0.4, 0.4)
+      glBegin(GL_LINE_LOOP)
+      for n in range(4):
+        glVertex2f(*button[f'v{n + 1}'])
+      glEnd()

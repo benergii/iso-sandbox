@@ -6,7 +6,7 @@ from OpenGL.GLU import *
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
 
-from functions.rendering import render_with_dictionary, render_hud
+from functions.rendering import render_with_dictionary, render_hud, render_popup_windows
 from functions.input import special_keys, normal_keys, mouse_motion, mouse_click, mouse_dragging
 from functions.object_movement import update_object_positions
 
@@ -34,6 +34,7 @@ def draw_scene():
   glClear(GL_COLOR_BUFFER_BIT)
 
   render_with_dictionary()
+  render_popup_windows()
   render_hud()
 
   glutSwapBuffers()

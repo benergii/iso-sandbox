@@ -54,7 +54,12 @@ def mouse_click_mechanics(button, state, x, y):
         if is_point_in_quad((gl_x, gl_y), button['v1'], button['v2'], button['v3'], button['v4']):
 
           print(f'Clicked on the {button['buttonName']} button')
-          config.user_data['mode'] = button['buttonName']
+
+          # Below allows for toggling on buttons - if you're already in Terraform then exit Terraform
+          if config.user_data['mode'] == button['buttonName']:
+            config.user_data['mode'] = None
+          else:
+            config.user_data['mode'] = button['buttonName']
       
       # Then we handle all the other stuff (at this stage just for terraforming)
 
