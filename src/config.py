@@ -29,7 +29,7 @@ rotation_integer = 0
 gameboard, cell_render_order = build_iso_gameboard()
 
 # Empty variable to store the value of the cell we are interacting with
-interaction_cells = []
+interaction_cell = None
 
 # ------------- HUD ------------- #
 
