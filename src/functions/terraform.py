@@ -5,6 +5,7 @@ import config
 def terraform_popup(action):
 
   if action == 'increase': config.terraform_scalar += 1
-  elif action == 'decrease': config.terraform_scalar -= 1
+  # Only decrease to 0 as minimum
+  elif action == 'decrease': config.terraform_scalar = max(config.terraform_scalar - 1, 0)
   
   print(f'Terraform Scalar is {config.terraform_scalar}')
