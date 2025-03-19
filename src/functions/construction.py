@@ -30,7 +30,7 @@ def kill_the_path_early():
   # Then just reset all the construction vars back to default
   temp_cells_constructed_on = []
   temp_path = []
-  config.construction_cells = []
+  config.construction_cell = None
   construction_direction = 0
 
   print('PATH HAS BEEN TERMINATED EARLY')
