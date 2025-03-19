@@ -29,7 +29,7 @@ rotation_integer = 0
 gameboard, cell_render_order = build_iso_gameboard()
 
 # Empty variable to store the value of the cell we are interacting with
-interaction_cell = None
+interaction_cells = []
 
 # ------------- HUD ------------- #
 
@@ -74,7 +74,7 @@ objects = []
 # ----------------------------------- CONSTRUCTION -----------------------------------
 # NB: Might be able to get away w not putting this in the Config, but doing so for now
 
-construction_cell = None
+construction_cells = []
 
 
 
