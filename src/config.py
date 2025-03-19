@@ -74,7 +74,7 @@ objects = []
 # ----------------------------------- CONSTRUCTION -----------------------------------
 # NB: Might be able to get away w not putting this in the Config, but doing so for now
 
-construction_cells = []
+construction_cell = None
 
 
 

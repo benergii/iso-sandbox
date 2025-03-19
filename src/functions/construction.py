@@ -30,7 +30,7 @@ def kill_the_path_early():
   # Then just reset all the construction vars back to default
   temp_cells_constructed_on = []
   temp_path = []
-  config.construction_cell = None
+  config.construction_cells = []
   construction_direction = 0
 
   print('PATH HAS BEEN TERMINATED EARLY')
@@ -73,27 +73,26 @@ def place_first_piece_of_line():
   if len(temp_cells_constructed_on) == 0:
 
     # Add a line object to the cell being clicked on
-    config.gameboard[config.interaction_cell]['objectOnCell'] = {
+    config.gameboard[config.interaction_cells[0]]['objectOnCell'] = {
       'type': 'line',
       'orientation': construction_direction
     }
 
-    config.gameboard[config.interaction_cell]['objectHeight'] = 0
+    config.gameboard[config.interaction_cells[0]]['objectHeight'] = 0
 
     # Log the clicked cell as the first cell being constructed on
-    temp_cells_constructed_on.append(config.interaction_cell)
+    temp_cells_constructed_on.append(config.interaction_cells[0])
 
     # Write first coordinate to the temp object path
-    temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cell]['v2'], config.gameboard[config.interaction_cell]['v0']))
+    temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cells[0]]['v2'], config.gameboard[config.interaction_cells[0]]['v0']))
 
     # Now dictate that the next cell being constructed on is x/y +- 1 away from the interaction cell
-    config.construction_cell = tuple(add_vectors(config.interaction_cell, direction_mapper[construction_direction]))
+    config.construction_cell = tuple(add_vectors(config.interaction_cells[0], direction_mapper[construction_direction]))
 
     # Let's see if any of that functionally worked...
-    print(config.gameboard[config.interaction_cell])
     print(temp_cells_constructed_on)
     print(temp_path)
-    print(f'Interaction Cell index is: {config.interaction_cell}')
+    print(f'Interaction Cell index is: {config.interaction_cells[0]}')
     print(f'Construction Cell index is: {config.construction_cell}')
 
 
