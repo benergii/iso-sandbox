@@ -81,7 +81,10 @@ def mouse_click_mechanics(button, state, x, y):
             config.user_data['mode'] = button['buttonName']
           
           # Placeholder to kill path construction early if HUD button is clicked
+          # And to reset the terraform scalar
+          # I need to find a better place to put these man...
           kill_the_path_early()
+          config.terraform_scalar = 0
 
       # ---- POPUP BUTTONS ---- #
 
@@ -125,5 +128,6 @@ def mouse_drag_mechanics(x, y):
 
       # Then update the height of the cell!
       # config.interaction_cell['height'] += units_dragged
-      config.gameboard[config.interaction_cell]['height'] += units_dragged
+      for cell_index in config.interaction_cells:
+        config.gameboard[cell_index]['height'] += units_dragged
       click_position = [gl_x, gl_y]
