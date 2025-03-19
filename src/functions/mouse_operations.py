@@ -129,5 +129,5 @@ def mouse_drag_mechanics(x, y):
       # Then update the height of the cell!
       # config.interaction_cell['height'] += units_dragged
       for cell_index in config.interaction_cells:
-        config.gameboard[cell_index]['height'] += units_dragged
+        config.gameboard[cell_index]['height'] = max(config.gameboard[cell_index]['height'] + units_dragged, config.unit_height)
       click_position = [gl_x, gl_y]
