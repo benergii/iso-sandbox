@@ -2,8 +2,9 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from .construction import place_first_piece_of_line, place_next_piece_of_line, kill_the_path_early
+from .construction import place_first_piece_of_line, construct_path_popup, kill_the_path_early
 from .tools import add_vectors, is_point_in_quad, normalise_pixel_coords
+from .terraform import *
 
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
@@ -66,28 +67,42 @@ def mouse_click_mechanics(button, state, x, y):
           else:
             config.user_data['mode'] = button['buttonName']
           
-          # Just dropping this in here - not the right place for it but who cares lol
-          kill_the_path_early()
+      #     # Just dropping this in here - not the right place for it but who cares lol
+      #     kill_the_path_early()
 
       # --------------------------------- CONSTRUCTION BUTTONS --------------------------------- #
+
+      # if config.user_data['mode']:
+
+      #   for button in config.popup_windows[config.user_data['mode']]['buttons']:
+
+      #     if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
+      #       place_next_piece_of_line(button['name'])
+
+      # Then we check to see what mode we're in, and perform the respective actions
+      if config.user_data['mode'] == 'construct_path':
+        place_first_piece_of_line()
+
+
+      # --------------------------------- NEW SHIT --------------------------------- #
+
+      # POPUP BUTTONS
 
       if config.user_data['mode']:
 
         for button in config.popup_windows[config.user_data['mode']]['buttons']:
 
+          # If user has clicked on a button (by determining intersection with button vertices)...
           if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
-            place_next_piece_of_line(button['name'])
 
-        # Then we check to see what mode we're in, and perform the respective actions
-        if config.user_data['mode'] == 'constructPath':
-
-          place_first_piece_of_line()
+            # Then perform the function dictated by {user mode}_popup, with the button name passed as argument
+            globals()[f'{config.user_data['mode']}_popup'](button['name'])
 
       # ------------------------------------ TERRAFORMING ------------------------------------ #
 
-        elif config.user_data['mode'] == 'terraform':
+        # elif config.user_data['mode'] == 'terraform':
         
-          is_dragging = True
+        #   is_dragging = True
     
     elif state == GLUT_UP:
       click_position = None

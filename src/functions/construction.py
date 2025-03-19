@@ -98,7 +98,7 @@ def place_first_piece_of_line():
 
 
 # Pretty much the same pattern as above but with the construction_cell being used as reference rather than interaction_cell
-def place_next_piece_of_line(line_direction):
+def construct_path_popup(action):
 
   global temp_cells_constructed_on, temp_path, construction_direction
 
@@ -112,13 +112,13 @@ def place_next_piece_of_line(line_direction):
     # And orientation of the corner made by direction(0) -> direction(1) is also orientation(0), and also rotates counterclockwise
     # Worst description of that ever lmao, but draw it out on paper if you ever forget - that's how I just figured it out
 
-    if line_direction == 'left':
+    if action == 'left':
       line_type = 'turn'
       line_orientation = construction_direction
       # Update the construction direction to reflect the direction provided in function
       construction_direction = (construction_direction + 1) % 4
 
-    elif line_direction == 'right':
+    elif action == 'right':
       line_type = 'turn'
       line_orientation = (1 + construction_direction) % 4
       # Update the construction direction to reflect the direction provided in function
