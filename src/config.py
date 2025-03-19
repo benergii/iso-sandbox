@@ -38,7 +38,7 @@ hud_icon_x = 0.07
 hud_icon_y = hud_icon_x * window_x / window_y
 
 # Actual HUD button array
-hud_buttons = build_hud(['terraform', 'constructPath'])
+hud_buttons = build_hud(['terraform', 'construct_path'])
 
 # Dictate which 'mode' the user is in
 user_data = {
@@ -49,7 +49,7 @@ user_data = {
 
 popup_definition = [
   {
-    'name': 'constructPath',
+    'name': 'construct_path',
     'buttons': [
       'left',
       'straight',
@@ -58,8 +58,8 @@ popup_definition = [
   }, {
     'name': 'terraform',
     'buttons': [
-      'increase',
       'decrease',
+      'increase',
     ]
   }
 ]
@@ -75,3 +75,10 @@ objects = []
 # NB: Might be able to get away w not putting this in the Config, but doing so for now
 
 construction_cell = None
+
+
+
+
+# TESTING SHIT
+
+terraform_scalar = 0
