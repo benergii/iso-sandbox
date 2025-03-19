@@ -58,8 +58,8 @@ popup_definition = [
   }, {
     'name': 'terraform',
     'buttons': [
-      'increase',
       'decrease',
+      'increase',
     ]
   }
 ]

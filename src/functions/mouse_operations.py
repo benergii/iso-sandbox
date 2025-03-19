@@ -2,9 +2,9 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from .construction import place_first_piece_of_line, construct_path_popup, kill_the_path_early
 from .tools import add_vectors, is_point_in_quad, normalise_pixel_coords
 from .terraform import *
+from .construction import *
 
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
@@ -21,6 +21,7 @@ def mouse_hover_mechanics(x, y):
 
   config.interaction_cell = None
 
+  # Detecting hover over cell, storing the cell index if hovered
   for cell_index in config.cell_render_order:
 
     cell = config.gameboard[cell_index]
@@ -33,10 +34,10 @@ def mouse_hover_mechanics(x, y):
 
     if is_point_in_quad((gl_x, gl_y), v0, v1, v2, v3):
       
-      # config.interaction_cell = cell
       config.interaction_cell = cell_index
 
-# Handle the mouse clicking mechanics
+# --------------------------------- MOUSE CLICK MECHANICS --------------------------------- #
+
 def mouse_click_mechanics(button, state, x, y):
 
   global click_position, is_dragging
@@ -51,42 +52,27 @@ def mouse_click_mechanics(button, state, x, y):
       click_position = [gl_x, gl_y]
       print(f'Mouse Clicked at: {click_position}')
 
-      # --------------------------------- HUD BUTTONS --------------------------------- #
+      # ---- HUD Buttons ---- #
 
-      # First - are we clicking on a HUD button?
       for button_index in list(config.hud_buttons.keys()):
         button = config.hud_buttons[button_index]
 
+        # Check to see if user has clicked on a button
         if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
 
           print(f'Clicked on the {button['buttonName']} button')
 
-          # Below allows for toggling on buttons - if you're already in Terraform then exit Terraform
+          # If so - update the user 'mode' to reflect this
+          # Accounting for toggling - ie if user is in 'teraform' and clicks it again, then clear the mode
           if config.user_data['mode'] == button['buttonName']:
             config.user_data['mode'] = None
           else:
             config.user_data['mode'] = button['buttonName']
           
-      #     # Just dropping this in here - not the right place for it but who cares lol
-      #     kill_the_path_early()
+          # Placeholder to kill path construction early if HUD button is clicked
+          kill_the_path_early()
 
-      # --------------------------------- CONSTRUCTION BUTTONS --------------------------------- #
-
-      # if config.user_data['mode']:
-
-      #   for button in config.popup_windows[config.user_data['mode']]['buttons']:
-
-      #     if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
-      #       place_next_piece_of_line(button['name'])
-
-      # Then we check to see what mode we're in, and perform the respective actions
-      if config.user_data['mode'] == 'construct_path':
-        place_first_piece_of_line()
-
-
-      # --------------------------------- NEW SHIT --------------------------------- #
-
-      # POPUP BUTTONS
+      # ---- POPUP BUTTONS ---- #
 
       if config.user_data['mode']:
 
@@ -97,19 +83,19 @@ def mouse_click_mechanics(button, state, x, y):
 
             # Then perform the function dictated by {user mode}_popup, with the button name passed as argument
             globals()[f'{config.user_data['mode']}_popup'](button['name'])
+      
+      # ---- Bespoke actions ---- #
 
-      # ------------------------------------ TERRAFORMING ------------------------------------ #
-
-        # elif config.user_data['mode'] == 'terraform':
-        
-        #   is_dragging = True
+      if config.user_data['mode'] == 'construct_path': place_first_piece_of_line()
+      elif config.user_data['mode'] == 'terraform': is_dragging = True
     
     elif state == GLUT_UP:
       click_position = None
       is_dragging = False
       print(f'Mouse unclicked at: [{gl_x}, {gl_y}]')
 
-# Handle the mouse being click-dragged on screen
+# --------------------------------- MOUSE DRAG MECHANICS --------------------------------- #
+
 def mouse_drag_mechanics(x, y):
 
   global click_position, is_dragging
