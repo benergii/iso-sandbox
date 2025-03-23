@@ -15,6 +15,18 @@ direction_mapper = [
 ]
 construction_direction = 0
 
+# Use the 'z' key to rotate the orientation of the starting line
+def rotate_starting_piece():
+
+  global construction_direction
+
+  # Only perform rotation if we're in construct_path mode, and we haven't built any line segments yet
+  if config.user_data['mode'] == 'construct_path' and len(temp_cells_constructed_on) == 0:
+    # Keep it in base 4 arithmetic please!!!
+    construction_direction = (construction_direction + 1) % 4
+    
+    print(f'Initial piece orientation has changed to: {construction_direction}')
+
 # Logic for not finishing the path - if the user clicks on one of the other HUD buttons before completion
 def kill_the_path_early():
 
