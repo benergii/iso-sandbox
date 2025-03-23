@@ -95,7 +95,7 @@ def mouse_click_mechanics(button, state, x, y):
           # If user has clicked on a button (by determining intersection with button vertices)...
           if is_point_in_quad((gl_x, gl_y), button['v0'], button['v1'], button['v2'], button['v3']):
 
-            # Then perform the function dictated by {user mode}_popup, with the button name passed as argument
+            # Then perform the function dictated by f'{user mode}_popup', with the button name passed as argument
             globals()[f'{config.user_data['mode']}_popup'](button['name'])
       
       # ---- Bespoke actions ---- #
@@ -127,7 +127,7 @@ def mouse_drag_mechanics(x, y):
     if units_dragged != 0:
 
       # Then update the height of the cell!
-      # config.interaction_cell['height'] += units_dragged
-      for cell_index in config.interaction_cells:
-        config.gameboard[cell_index]['height'] += units_dragged
+      terraform_cells(units_dragged)
+
+      # And finally, update the base position - this allows for continuous motion, instead of just updating on mouse release
       click_position = [gl_x, gl_y]
