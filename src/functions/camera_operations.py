@@ -52,6 +52,12 @@ def rotate_camera():
 
     # Now do the Current Position as well
     object['lastKnownPosition'] = rotate_coordinates(*object['lastKnownPosition'])
+  
+  # ALSO need to rotate any coordinates stored in a temporary path - oh my lord
+  rotated_temp_path = []
+  for path_point in config.temp_path:
+    rotated_temp_path.append(rotate_coordinates(*path_point))
+  config.temp_path = rotated_temp_path
     
   # Need to run a full rotation pattern on the camera_offset config variable too
   config.camera_offset = [*rotate_coordinates(*config.camera_offset)]
