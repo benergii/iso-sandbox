@@ -100,7 +100,7 @@ def mouse_click_mechanics(button, state, x, y):
       
       # ---- Bespoke actions ---- #
 
-      if config.user_data['mode'] == 'construct_path': place_first_piece_of_line()
+      if config.user_data['mode'] == 'construct_path' and config.interaction_cells: place_first_piece_of_line()
       elif config.user_data['mode'] == 'terraform': is_dragging = True
     
     elif state == GLUT_UP:
