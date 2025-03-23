@@ -2,10 +2,6 @@ from .tools import add_vectors, find_vector_midpoint
 
 import config
 
-# Global vars used only in the construction process
-temp_cells_constructed_on = []
-temp_path = []
-
 # Might use this to decide directions for next construction block
 direction_mapper = [
   (1, 0),
@@ -21,7 +17,7 @@ def rotate_starting_piece():
   global construction_direction
 
   # Only perform rotation if we're in construct_path mode, and we haven't built any line segments yet
-  if config.user_data['mode'] == 'construct_path' and len(temp_cells_constructed_on) == 0:
+  if config.user_data['mode'] == 'construct_path' and len(config.temp_cells_constructed_on) == 0:
     # Keep it in base 4 arithmetic please!!!
     construction_direction = (construction_direction + 1) % 4
     
@@ -30,18 +26,18 @@ def rotate_starting_piece():
 # Logic for not finishing the path - if the user clicks on one of the other HUD buttons before completion
 def kill_the_path_early():
 
-  global temp_cells_constructed_on, temp_path, construction_direction
+  global construction_direction
 
   # First - clear all the cells which lines were placed on
   # This pattern was an EXCELLENT idea - good on you for thinking of it early
-  for cell_index in temp_cells_constructed_on:
+  for cell_index in config.temp_cells_constructed_on:
 
     config.gameboard[cell_index]['objectOnCell'] = None
     config.gameboard[cell_index]['objectHeight'] = None
   
   # Then just reset all the construction vars back to default
-  temp_cells_constructed_on = []
-  temp_path = []
+  config.temp_cells_constructed_on = []
+  config.temp_path = []
   config.construction_cell = None
   construction_direction = 0
 
@@ -50,26 +46,26 @@ def kill_the_path_early():
 # Logic for completing the path - for when the construction engine meets up with the start of the path!
 def complete_line_construction():
 
-  global temp_cells_constructed_on, temp_path, construction_direction
+  global construction_direction
 
   # Actions for completion of path:
   # 1. write entry to the 'objects' dictionary
-  # 2. clear the temp_cells_constructed_on and temp_path global variables
+  # 2. clear the config.temp_cells_constructed_on and config.temp_path global variables
   # 3. clear the construction_cell config variable
   # 4. set the user_data mode to NoneType
 
   config.objects.append({
     'name': 'object1',
     'color': (1, 0, 0),
-    'path': temp_path,
+    'path': config.temp_path,
     'height': config.unit_height,
     'speed': 0.2,
     'lastKnownSegment': 0,
-    'lastKnownPosition': temp_path[0]
+    'lastKnownPosition': config.temp_path[0]
   })
 
-  temp_path = []
-  temp_cells_constructed_on = []
+  config.temp_path = []
+  config.temp_cells_constructed_on = []
   config.construction_cell = None
   config.user_data['mode'] = None
   construction_direction = 0
@@ -79,10 +75,8 @@ def complete_line_construction():
 
 def place_first_piece_of_line():
 
-  global temp_cells_constructed_on, temp_path
-
   # If no current pieces have been placed yet then place the first piece
-  if len(temp_cells_constructed_on) == 0:
+  if len(config.temp_cells_constructed_on) == 0:
 
     # Add a line object to the cell being clicked on
     config.gameboard[config.interaction_cells[0]]['objectOnCell'] = {
@@ -93,17 +87,17 @@ def place_first_piece_of_line():
     config.gameboard[config.interaction_cells[0]]['objectHeight'] = 0
 
     # Log the clicked cell as the first cell being constructed on
-    temp_cells_constructed_on.append(config.interaction_cells[0])
+    config.temp_cells_constructed_on.append(config.interaction_cells[0])
 
     # Write first coordinate to the temp object path
-    temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cells[0]]['v2'], config.gameboard[config.interaction_cells[0]]['v0']))
+    config.temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cells[0]]['v2'], config.gameboard[config.interaction_cells[0]]['v0']))
 
     # Now dictate that the next cell being constructed on is x/y +- 1 away from the interaction cell
     config.construction_cell = tuple(add_vectors(config.interaction_cells[0], direction_mapper[construction_direction]))
 
     # Let's see if any of that functionally worked...
-    print(temp_cells_constructed_on)
-    print(temp_path)
+    print(config.temp_cells_constructed_on)
+    print(config.temp_path)
     print(f'Interaction Cell index is: {config.interaction_cells[0]}')
     print(f'Construction Cell index is: {config.construction_cell}')
 
@@ -111,9 +105,9 @@ def place_first_piece_of_line():
 # Pretty much the same pattern as above but with the construction_cell being used as reference rather than interaction_cell
 def construct_path_popup(action):
 
-  global temp_cells_constructed_on, temp_path, construction_direction
+  global construction_direction
 
-  if len(temp_cells_constructed_on) != 0:
+  if len(config.temp_cells_constructed_on) != 0:
 
     
 
@@ -149,10 +143,10 @@ def construct_path_popup(action):
     config.gameboard[config.construction_cell]['objectHeight'] = 0
 
     # Continuing to add to the list of cells constructed on - so we can wipe them out if exit partway through
-    temp_cells_constructed_on.append(config.construction_cell)
+    config.temp_cells_constructed_on.append(config.construction_cell)
 
     # Adding the new point to the temp path
-    temp_path.append(find_vector_midpoint(config.gameboard[config.construction_cell]['v2'], config.gameboard[config.construction_cell]['v0']))
+    config.temp_path.append(find_vector_midpoint(config.gameboard[config.construction_cell]['v2'], config.gameboard[config.construction_cell]['v0']))
 
     print(config.gameboard[config.construction_cell])
 
@@ -162,7 +156,7 @@ def construct_path_popup(action):
     # Is the line complete? If so, let's kill this!
 
     if (
-      temp_cells_constructed_on[0] == config.construction_cell
+      config.temp_cells_constructed_on[0] == config.construction_cell
       and construction_direction == config.gameboard[config.construction_cell]['objectOnCell']['orientation']
     ):
       complete_line_construction()

@@ -73,8 +73,11 @@ objects = []
 
 # ----------------------------------- CONSTRUCTION -----------------------------------
 # NB: Might be able to get away w not putting this in the Config, but doing so for now
+# UPDATE: CANT GET AWAY WITH NOT PUTTING IT IN THE CONFIG - AS NEED TO ROTATE PATH COORDS WITH CAMERA ROTATION
 
 construction_cell = None
+temp_cells_constructed_on = []
+temp_path = []
 
 
 
