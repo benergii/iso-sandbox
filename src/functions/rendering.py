@@ -85,7 +85,8 @@ def render_with_dictionary():
 
       # Rendering vertical lines on the z-axis edges of the cell
       glLineWidth(0.5)
-      for n in [3, 0, 1]:
+      # Below is to work with the rotating vertices - go against the rotation direction
+      for n in [(3 - config.rotation_integer) % 4, -config.rotation_integer % 4, (1 - config.rotation_integer) % 4]:
         glBegin(GL_LINE_STRIP)
         glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
         glVertex2f(*add_vectors(cell[f'v{n}'], config.camera_offset))
