@@ -2,6 +2,8 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
+from random import randint
+
 from .tools import iso_translater
 
 # LOADING IN ALL OUR SETUP VARIABLES
@@ -9,6 +11,20 @@ import config
 
 # Building a list of dictionaries for iso game board
 def build_iso_gameboard():
+
+  # JUST SOME COLOURS TO MAKE IT ALL A BIT NICER TO LOOK AT
+  gameboard_colors = [
+    (0.7, 0.9, 0.7),
+    (0.6, 0.85, 0.6),
+    (0.75, 0.92, 0.75),
+    (0.68, 0.88, 0.68),
+    (0.72, 0.93, 0.72),
+    (0.65, 0.87, 0.65),
+    (0.78, 0.95, 0.78),
+    (0.7, 0.89, 0.7),
+    (0.62, 0.84, 0.62),
+    (0.74, 0.91, 0.74),
+]
 
   # PLEASE BE AWARE: GAMEBOARDS WITH ODD TOTAL AREAS WORK BEST
   # IE 11 x 11 vs 10 x 10
@@ -32,7 +48,7 @@ def build_iso_gameboard():
         'v2': [v3_x, v3_y],
         'v3': [v4_x, v4_y],
         'height': config.unit_height,
-        'color': (1, 1, 1 / (y + 0.0001)),
+        'color': gameboard_colors[randint(0, len(gameboard_colors) - 1)],
         'objectOnCell': None,
         'objectHeight': None
       }

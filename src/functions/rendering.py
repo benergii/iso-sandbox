@@ -76,12 +76,22 @@ def render_with_dictionary():
       glEnd()
 
       # Rendering the grid around the cell
-      glColor(0, 0, 1, 0.5)
+      glColor(0.15, 0.07, 0.05)
       glLineWidth(3) if element['key'] in [config.construction_cell] + config.interaction_cells else glLineWidth(0.5) # Thicker grid if mouse hover
       glBegin(GL_LINE_LOOP)
       for n in range(4):
         glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
       glEnd()
+
+      # Rendering vertical lines on the z-axis edges of the cell
+      glLineWidth(0.5)
+      # Below is to work with the rotating vertices - go against the rotation direction
+      for n in [(3 - config.rotation_integer) % 4, -config.rotation_integer % 4, (1 - config.rotation_integer) % 4]:
+        glBegin(GL_LINE_STRIP)
+        glVertex2f(*add_vectors(cell[f'v{n}'], [0, cell['height']], config.camera_offset))
+        glVertex2f(*add_vectors(cell[f'v{n}'], config.camera_offset))
+        glEnd()
+
 
       # ------------------ STATIC OBJECT RENDERING ------------------ #
 
