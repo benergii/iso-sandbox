@@ -15,7 +15,7 @@ def update_object_positions():
         # Store the stuff I need - just makes the next steps easier
         current_position = object['lastKnownPosition']
         current_segment = object['lastKnownSegment']
-        path = object['path']
+        path = object['absolutePath']
         speed = object['speed']
         n_points = len(path)
 
@@ -50,6 +50,8 @@ def update_object_positions():
 
             # Update object to ensure it knows it's on the next segment
             object['lastKnownSegment'] = current_segment
-
+            
     # Update last_snapped_time after all objects are processed
     last_snapped_time = time()
+
+    

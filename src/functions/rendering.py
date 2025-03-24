@@ -21,7 +21,7 @@ def render_with_dictionary():
   highest_vertex = (2 - config.rotation_integer) % 4
 
   all_elements = [{
-    'type': 0,
+    'type': 1,
     'key': n,
     'coord': config.gameboard[n][f'v{highest_vertex}']
     } for n in config.cell_render_order
@@ -31,19 +31,21 @@ def render_with_dictionary():
   for n in range(len(config.objects)):
 
     all_elements.append({
-      'type': 1,
+      'type': 0,
       'key': n,
-      'coord': config.objects[n]['lastKnownPosition']
+      'coord': config.gameboard[config.objects[n]['cellPath'][config.objects[n]['lastKnownSegment']]][f'v{highest_vertex}']
     })
 
   # Sort em all!!
-  all_elements = sorted(all_elements, key = lambda t: (t['coord'][1], t['coord'][0], t['type']), reverse = True)
+  all_elements = sorted(all_elements, key = lambda t: (t['coord'][1], -t['coord'][0], t['type']), reverse = True)
+
+  print(all_elements)
 
   # Now for each element...
   for element in all_elements:
 
     # If they're a cell...
-    if element['type'] == 0:
+    if element['type'] == 1:
       
       # ------------------ GAME BOARD RENDERING (CELLS) ------------------ #
 
@@ -144,7 +146,7 @@ def render_with_dictionary():
           glEnd()
 
     # Else, if they're an object...
-    elif element['type'] == 1:
+    elif element['type'] == 0:
 
       # You guessed it skipper - render an object!
       # It's really that easy!
@@ -153,10 +155,10 @@ def render_with_dictionary():
       # For now I'm just rendering a super basic quad around a point - just to PoC this
       glColor(*object['color'])
       glBegin(GL_QUADS)
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], [0, object['height']], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], config.camera_offset))
       glEnd()
 
 

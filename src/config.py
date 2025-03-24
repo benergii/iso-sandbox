@@ -11,7 +11,7 @@ from functions.build_objects import (
 window_x = 1024
 window_y = 768
 unit_width = 0.4
-gameboard_dimensions = [11, 11]
+gameboard_dimensions = [5, 5]
 
 # Unit height needs to correspond with the iso-transformed unit width
 unit_height = (unit_width ** 2) * (2 / 6)
