@@ -15,13 +15,16 @@ def update_object_positions():
         # Store the stuff I need - just makes the next steps easier
         current_position = object['lastKnownPosition']
         current_segment = object['lastKnownSegment']
+        current_height = object['lastKnownHeight']
         path = object['path']
+        height_path = object['height']
         speed = object['speed']
         n_points = len(path)
 
 
         # First, let's see if this object needs to be rendered on the next path segment
         dist_left_current_segment = get_magnitude(current_position, path[(current_segment + 1) % n_points])
+        height_change_left_current_segment = height_path[(current_segment + 1) % n_points] - current_height
         dist_to_travel = (time() - last_snapped_time) * speed
 
         # Case 1: this increment will keep the object along the current path segment
@@ -31,6 +34,8 @@ def update_object_positions():
                 current_position[0] + unit_vector[0] * dist_to_travel,
                 current_position[1] + unit_vector[1] * dist_to_travel
             ]
+            # Incrementing height by the % of the path left which is being travelled
+            object['lastKnownHeight'] += height_change_left_current_segment * (dist_to_travel / dist_left_current_segment)
         
         # Case 2: this increment completes a segment and needs to roll to the next one
         else:
@@ -47,6 +52,10 @@ def update_object_positions():
                 next_segment_start[0] + unit_vector[0] * dist_to_travel,
                 next_segment_start[1] + unit_vector[1] * dist_to_travel,
             ]
+            # In order to do height, need to calculate % of next path we are going to travel, and apply to the height delta
+            dist_next_segment = get_magnitude(next_segment_start, path[(current_segment + 1) % n_points])
+            height_change_next_segment = height_path[(current_segment + 1) % n_points] - height_path[current_segment]
+            object['lastKnownHeight'] = height_path[current_segment] + height_change_next_segment * (dist_to_travel / dist_next_segment)
 
             # Update object to ensure it knows it's on the next segment
             object['lastKnownSegment'] = current_segment

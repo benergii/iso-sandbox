@@ -33,7 +33,7 @@ def render_with_dictionary():
     all_elements.append({
       'type': 1,
       'key': n,
-      'coord': config.objects[n]['lastKnownPosition']
+      'coord': add_vectors(config.objects[n]['lastKnownPosition'], [0, -config.objects[n]['lastKnownHeight']])
     })
 
   # Sort em all!!

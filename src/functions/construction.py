@@ -62,7 +62,8 @@ def complete_line_construction():
     'height': config.temp_height,
     'speed': 0.2,
     'lastKnownSegment': 0,
-    'lastKnownPosition': config.temp_path[0]
+    'lastKnownPosition': config.temp_path[0],
+    'lastKnownHeight': config.temp_height[0]
   })
 
   config.temp_path = []
