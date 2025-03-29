@@ -92,30 +92,45 @@ def build_popup_windows(popup_definition):
       'buttons': []
     }
 
-    # Need to figure out how many buttons the popup is to have - so as to centre them in the screen
-    n_buttons = len(popup['buttons'])
-    button_starting_x = -1 * n_buttons * config.hud_icon_x / 2
+    button_starting_y = 0.9
+
+    # Storing max buttons in row for usage in back panel creation
+    max_buttons_in_row = 0
 
     # For each of the buttons the popup is to have...
-    for button in popup['buttons']:
+    for button_row in popup['buttons']:
 
-      # Put them in the dictionary
-      popup_dict[popup_name]['buttons'].append({
-        'name': button,
-        'v0': (button_starting_x, 0.8 - config.hud_icon_y),
-        'v1': (button_starting_x + config.hud_icon_x, 0.8 - config.hud_icon_y),
-        'v2': (button_starting_x + config.hud_icon_x, 0.8),
-        'v3': (button_starting_x, 0.8)
-      })
+      # Need to figure out how many buttons the popup is to have - so as to centre them in the screen
+      n_buttons = len(button_row)
+      if n_buttons > max_buttons_in_row: max_buttons_in_row = n_buttons # Again, for back panel creation
+      button_starting_x = -1 * n_buttons * config.hud_icon_x / 2
 
-      # Then indent the x-position, ready for the next one!
-      button_starting_x += config.hud_icon_x
+      for button in button_row:
+
+        # Put them in the dictionary
+        popup_dict[popup_name]['buttons'].append({
+          'name': button,
+          'v0': (button_starting_x, button_starting_y - config.hud_icon_y),
+          'v1': (button_starting_x + config.hud_icon_x, button_starting_y - config.hud_icon_y),
+          'v2': (button_starting_x + config.hud_icon_x, button_starting_y),
+          'v3': (button_starting_x, button_starting_y)
+        })
+
+        # Then indent the x-position, ready for the next one!
+        button_starting_x += config.hud_icon_x
+      
+      # Next row!
+      button_starting_y -= config.hud_icon_y + 0.01
+
+    # Now let's build the window the buttons sit on
+
+    number_of_rows = len(popup['buttons'])
 
     # The main window the buttons are to sit in - basically just button perimeters with a 0.01 buffer around edges
-    popup_dict[popup_name]['v0'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.79 - config.hud_icon_y)
-    popup_dict[popup_name]['v1'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.79 - config.hud_icon_y)
-    popup_dict[popup_name]['v2'] = (n_buttons * config.hud_icon_x / 2 + 0.01, 0.81)
-    popup_dict[popup_name]['v3'] = (-1 * n_buttons * config.hud_icon_x / 2 - 0.01, 0.81)
+    popup_dict[popup_name]['v0'] = (-1 * max_buttons_in_row * config.hud_icon_x / 2 - 0.01, 0.9 - (config.hud_icon_y + 0.01) * number_of_rows)
+    popup_dict[popup_name]['v1'] = (max_buttons_in_row * config.hud_icon_x / 2 + 0.01, 0.9 - (config.hud_icon_y + 0.01) * number_of_rows)
+    popup_dict[popup_name]['v2'] = (max_buttons_in_row * config.hud_icon_x / 2 + 0.01, 0.9 + 0.01)
+    popup_dict[popup_name]['v3'] = (-1 * max_buttons_in_row * config.hud_icon_x / 2 - 0.01, 0.9 + 0.01)
 
     popup_dict[popup_name]['color'] = (0.8, 0.8, 0.8)
 

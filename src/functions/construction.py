@@ -144,6 +144,8 @@ def construct_path_popup(action):
       # On the assumption that direction(0) = (1, 0) and rotates counterclockwise per each increment
       # And orientation of the corner made by direction(0) -> direction(1) is also orientation(0), and also rotates counterclockwise
       # Worst description of that ever lmao, but draw it out on paper if you ever forget - that's how I just figured it out
+      
+      print(f'BUTTON PRESSED: {action}')
 
       if action == 'left':
         line_type = 'turn'
@@ -184,7 +186,7 @@ def construct_path_popup(action):
       # Write cell height to temp height array
       config.temp_height.append(config.gameboard[config.construction_cell]['height'])
 
-      print(config.gameboard[config.construction_cell])
+      print(f'{action} line placed on cell {config.construction_cell}')
 
       # increment the construction cell to the next one
       config.construction_cell = tuple(add_vectors(config.construction_cell, direction_mapper[construction_direction]))
@@ -196,6 +198,8 @@ def construct_path_popup(action):
         and construction_direction == config.gameboard[config.construction_cell]['objectOnCell']['orientation']
       ):
         complete_line_construction()
-
-      # NOW LETS SEE IF THE NEXT MOVE IS ALLOWED
-      collision_detection()
+      
+      # If not - then let's see if the next piece is possible to build on 
+      else:
+        collision_detection()
+      
