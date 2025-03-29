@@ -2,7 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from .tools import rotate_coordinates
+from .tools import rotate_coordinates, rotate_coordinates_with_height_component
 
 # LOADING IN ALL OUR SETUP VARIABLES
 import config
@@ -41,22 +41,27 @@ def rotate_camera():
       cell[f'v{n}'][1] = iso_y
     
   # Also need to rotate all the object paths and current positions
+  # KEEPING IN MIND YOU NEED TO TRANSFORM THE PATHS AND POSITIONS BY THEIR HEIGHTS FIRST
+  # Because iso coordinates are hard
   for object in config.objects:
 
     # Approach for this (since is a list) is to just append a new blank list then overwrite the old one
     rotated_path = []
     for n in range(len(object['path'])):
-      rotated_path.append(rotate_coordinates(*object['path'][n]))
+      # Rotation needs to be around the projection of an object to the grid base - so need to call a 'height component' rotation function
+      rotated_path.append(rotate_coordinates_with_height_component(*object['path'][n], object['height'][n]))
       
     object['path'] = rotated_path
 
     # Now do the Current Position as well
-    object['lastKnownPosition'] = rotate_coordinates(*object['lastKnownPosition'])
+    # Rotation needs to be around the projection of an object to the grid base - so need to call a 'height component' rotation function
+    object['lastKnownPosition'] = rotate_coordinates_with_height_component(*object['lastKnownPosition'], object['lastKnownHeight'])
   
   # ALSO need to rotate any coordinates stored in a temporary path - oh my lord
   rotated_temp_path = []
-  for path_point in config.temp_path:
-    rotated_temp_path.append(rotate_coordinates(*path_point))
+  for n in range(len(config.temp_path)):
+    # Rotation needs to be around the projection of an object to the grid base - so need to call a 'height component' rotation function
+    rotated_temp_path.append(rotate_coordinates_with_height_component(*config.temp_path[n], config.temp_height[n]))
   config.temp_path = rotated_temp_path
     
   # Need to run a full rotation pattern on the camera_offset config variable too
