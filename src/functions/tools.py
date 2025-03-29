@@ -1,5 +1,20 @@
 import config
 
+
+# I have no reason to need these - but might be useful
+def add_vectors(v1, v2, v3 = [0, 0], v4 = [0, 0]):
+  return [
+    v1[0] + v2[0] + v3[0] + v4[0],
+    v1[1] + v2[1] + v3[1] + v4[1]
+  ]
+
+def multiply_vectors(v1, v2, v3 = [0, 0]):
+
+  return [
+    v1[0] * v2[0] * v3[0],
+    v1[1] * v2[1] * v3[1]
+  ]
+
 # Translate cartesian coordinates to isometric coordinates
 def iso_translater(x, y):
 
@@ -28,6 +43,18 @@ def rotate_coordinates(iso_x, iso_y):
   iso_x_rotated, iso_y_rotated = iso_translater(cart_x, cart_y)
 
   return iso_x_rotated, iso_y_rotated
+
+# Because everything in iso coords is based on a base grid, object coordinates need to have height removed and readded pre + post rotation
+def rotate_coordinates_with_height_component(iso_x, iso_y, height):
+
+  # Subtract height to project to grid coordinates
+  grid_projected_coords = add_vectors([iso_x, iso_y], [0, -height])
+  # Rotate the grid-projected coordinates
+  rotated_projected_x, rotated_projected_y = rotate_coordinates(*grid_projected_coords)
+  # Re-add the height back to the projected coordinates
+  rotated_final_coords = add_vectors([rotated_projected_x, rotated_projected_y], [0, height])
+  
+  return rotated_final_coords[0], rotated_final_coords[1]
 
 # Convert pixel coordinates to normalised OpenGL coordinates (between -1 and 1 on both axes)
 def normalise_pixel_coords(x, y):
@@ -80,17 +107,5 @@ def find_vector_midpoint(v1, v2):
   ]
 
 
-# I have no reason to need these - but might be useful
-def add_vectors(v1, v2, v3 = [0, 0], v4 = [0, 0]):
-  return [
-    v1[0] + v2[0] + v3[0] + v4[0],
-    v1[1] + v2[1] + v3[1] + v4[1]
-  ]
 
-def multiply_vectors(v1, v2, v3 = [0, 0]):
-
-  return [
-    v1[0] * v2[0] * v3[0],
-    v1[1] * v2[1] * v3[1]
-  ]
 

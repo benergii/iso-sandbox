@@ -33,7 +33,7 @@ def render_with_dictionary():
     all_elements.append({
       'type': 1,
       'key': n,
-      'coord': config.objects[n]['lastKnownPosition']
+      'coord': add_vectors(config.objects[n]['lastKnownPosition'], [0, -config.objects[n]['lastKnownHeight']])
     })
 
   # Sort em all!!
@@ -76,7 +76,7 @@ def render_with_dictionary():
       glEnd()
 
       # Rendering the grid around the cell
-      glColor(0.15, 0.07, 0.05)
+      glColor(1, 0, 0) if element['key'] == config.construction_cell and config.can_you_build_here == False else glColor(0.15, 0.07, 0.05) # If cannot build then red outline
       glLineWidth(3) if element['key'] in [config.construction_cell] + config.interaction_cells else glLineWidth(0.5) # Thicker grid if mouse hover
       glBegin(GL_LINE_LOOP)
       for n in range(4):
@@ -84,6 +84,7 @@ def render_with_dictionary():
       glEnd()
 
       # Rendering vertical lines on the z-axis edges of the cell
+      glColor(0.15, 0.07, 0.05)
       glLineWidth(0.5)
       # Below is to work with the rotating vertices - go against the rotation direction
       for n in [(3 - config.rotation_integer) % 4, -config.rotation_integer % 4, (1 - config.rotation_integer) % 4]:
@@ -153,10 +154,10 @@ def render_with_dictionary():
       # For now I'm just rendering a super basic quad around a point - just to PoC this
       glColor(*object['color'])
       glBegin(GL_QUADS)
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], [0, object['height']], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], config.camera_offset))
       glEnd()
 
 

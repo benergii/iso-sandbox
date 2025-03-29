@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 
 from .camera_operations import move_camera, rotate_camera
 from .mouse_operations import mouse_hover_mechanics, mouse_click_mechanics, mouse_drag_mechanics
+from .construction import rotate_starting_piece
 
 # 'Special' keys here - such as arrow keys, anything non-alphanumeric basically
 def special_keys(key, x, y):
@@ -15,7 +16,13 @@ def special_keys(key, x, y):
 # 'Normal' keys here - think alphanumeric type beat
 def normal_keys(key, x, y):
 
-  rotate_camera(key)
+  # Rotate camera
+  if key == b' ':
+    rotate_camera()
+
+  # Rotate first piece of line construction
+  elif key == b'z':
+    rotate_starting_piece()
   
   glutPostRedisplay()
 
