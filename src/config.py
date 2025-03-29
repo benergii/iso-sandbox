@@ -78,6 +78,7 @@ objects = []
 construction_cell = None
 temp_cells_constructed_on = []
 temp_path = []
+temp_height = []
 
 
 

@@ -153,10 +153,10 @@ def render_with_dictionary():
       # For now I'm just rendering a super basic quad around a point - just to PoC this
       glColor(*object['color'])
       glBegin(GL_QUADS)
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], [0, object['height']], config.camera_offset))
-      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], [0, object['height']], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, -0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, -0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [0.01, 0.01], config.camera_offset))
+      glVertex2f(*add_vectors(object['lastKnownPosition'], [-0.01, 0.01], config.camera_offset))
       glEnd()
 
 

@@ -38,6 +38,7 @@ def kill_the_path_early():
   # Then just reset all the construction vars back to default
   config.temp_cells_constructed_on = []
   config.temp_path = []
+  config.temp_height = []
   config.construction_cell = None
   construction_direction = 0
 
@@ -58,7 +59,7 @@ def complete_line_construction():
     'name': 'object1',
     'color': (1, 0, 0),
     'path': config.temp_path,
-    'height': config.unit_height,
+    'height': config.temp_height,
     'speed': 0.2,
     'lastKnownSegment': 0,
     'lastKnownPosition': config.temp_path[0]
@@ -66,6 +67,7 @@ def complete_line_construction():
 
   config.temp_path = []
   config.temp_cells_constructed_on = []
+  config.temp_height = []
   config.construction_cell = None
   config.user_data['mode'] = None
   construction_direction = 0
@@ -90,7 +92,15 @@ def place_first_piece_of_line():
     config.temp_cells_constructed_on.append(config.interaction_cells[0])
 
     # Write first coordinate to the temp object path
-    config.temp_path.append(find_vector_midpoint(config.gameboard[config.interaction_cells[0]]['v2'], config.gameboard[config.interaction_cells[0]]['v0']))
+    config.temp_path.append(
+      find_vector_midpoint(
+        add_vectors(config.gameboard[config.interaction_cells[0]]['v2'], [0, config.gameboard[config.interaction_cells[0]]['height']]),
+        add_vectors(config.gameboard[config.interaction_cells[0]]['v0'], [0, config.gameboard[config.interaction_cells[0]]['height']])
+      )
+    )
+
+    # Write cell height to temp height array
+    config.temp_height.append(config.gameboard[config.interaction_cells[0]]['height'])
 
     # Now dictate that the next cell being constructed on is x/y +- 1 away from the interaction cell
     config.construction_cell = tuple(add_vectors(config.interaction_cells[0], direction_mapper[construction_direction]))
@@ -146,7 +156,15 @@ def construct_path_popup(action):
     config.temp_cells_constructed_on.append(config.construction_cell)
 
     # Adding the new point to the temp path
-    config.temp_path.append(find_vector_midpoint(config.gameboard[config.construction_cell]['v2'], config.gameboard[config.construction_cell]['v0']))
+    config.temp_path.append(
+      find_vector_midpoint(
+        add_vectors(config.gameboard[config.construction_cell]['v2'], [0, config.gameboard[config.construction_cell]['height']]),
+        add_vectors(config.gameboard[config.construction_cell]['v0'], [0, config.gameboard[config.construction_cell]['height']])
+      )
+    )
+
+    # Write cell height to temp height array
+    config.temp_height.append(config.gameboard[config.construction_cell]['height'])
 
     print(config.gameboard[config.construction_cell])
 
