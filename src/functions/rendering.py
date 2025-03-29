@@ -76,7 +76,7 @@ def render_with_dictionary():
       glEnd()
 
       # Rendering the grid around the cell
-      glColor(1, 0, 0) if element['key'] == config.construction_cell and config.can_you_build_here == False else glColor(0.15, 0.07, 0.05)
+      glColor(1, 0, 0) if element['key'] == config.construction_cell and config.can_you_build_here == False else glColor(0.15, 0.07, 0.05) # If cannot build then red outline
       glLineWidth(3) if element['key'] in [config.construction_cell] + config.interaction_cells else glLineWidth(0.5) # Thicker grid if mouse hover
       glBegin(GL_LINE_LOOP)
       for n in range(4):
