@@ -99,6 +99,22 @@ def render_with_dictionary():
       # For now just going to render straight lines...
       if cell['objectOnCell']:
 
+        # Rendering the support beam underneath the path
+        centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+        glColor(0.4, 0.4, 0.4)
+        glLineWidth(3)
+        glBegin(GL_LINE_STRIP)
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
+        glEnd()
+
+        # Rendering the support beam footer
+        glLineWidth(5)
+        glBegin(GL_LINE_STRIP)
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['height'] - 0.007], config.camera_offset))
+        glEnd()
+
         if cell['objectOnCell']['type'] == 'straight':
 
           # Getting the orientation of the line
@@ -110,7 +126,7 @@ def render_with_dictionary():
 
           # Drawing the line
           glColor(0, 0, 1)
-          glLineWidth(3)
+          glLineWidth(4)
           glBegin(GL_LINE_LOOP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight']], config.camera_offset))
           glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight']], config.camera_offset))
@@ -137,7 +153,7 @@ def render_with_dictionary():
 
           # Drawing the corner
           glColor(0, 0, 1)
-          glLineWidth(3)
+          glLineWidth(4)
           glBegin(GL_LINE_STRIP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight']], config.camera_offset))
           glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
@@ -154,7 +170,7 @@ def render_with_dictionary():
 
           # Drawing the line
           glColor(0, 0, 1)
-          glLineWidth(3)
+          glLineWidth(4)
           glBegin(GL_LINE_STRIP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight'] - config.unit_height / 2], config.camera_offset))
           glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
@@ -175,7 +191,7 @@ def render_with_dictionary():
 
           # Drawing the line
           glColor(0, 0, 1)
-          glLineWidth(3)
+          glLineWidth(4)
           glBegin(GL_LINE_STRIP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight']], config.camera_offset))
           glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
@@ -192,7 +208,7 @@ def render_with_dictionary():
 
           # Drawing the line
           glColor(0, 0, 1)
-          glLineWidth(3)
+          glLineWidth(4)
           glBegin(GL_LINE_STRIP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight'] - config.unit_height / 2], config.camera_offset))
           glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
