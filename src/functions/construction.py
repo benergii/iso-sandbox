@@ -33,8 +33,8 @@ def collision_detection():
   if (
     # 1: construction cell already has an object on it at the current construction height
     config.gameboard[config.construction_cell]['objectHeight'] == current_height
-    # 2: construction cell is higher than last built path segment
-    or config.gameboard[config.construction_cell]['height'] > config.temp_height[-1]
+    # 2: construction cell is higher than current piece attempting to build
+    or config.gameboard[config.construction_cell]['height'] > current_height
   ):
     config.can_you_build_here = False
     print('CANT BUILD HERE BRO!!!')
@@ -138,6 +138,11 @@ def place_first_piece_of_line():
     # NOW LETS SEE IF THE NEXT MOVE IS ALLOWED
     collision_detection()
 
+# Need a little function to block construction if attempting to build below land
+def z_axis_collision_detection(action):
+
+  # Return True if user is trying to build down below construction cell height
+  return action == 'down' and config.gameboard[config.construction_cell]['height'] >= current_height
 
 # Pretty much the same pattern as above but with the construction_cell being used as reference rather than interaction_cell
 def construct_path_popup(action):
@@ -146,7 +151,7 @@ def construct_path_popup(action):
 
   if len(config.temp_cells_constructed_on) != 0:
 
-    if config.can_you_build_here:
+    if config.can_you_build_here and z_axis_collision_detection(action) == False:
 
       # Line orientation == construction direction for left turns
       # Line orientation == construction direction + 1 for right turns
@@ -234,4 +239,7 @@ def construct_path_popup(action):
       # If not - then let's see if the next piece is possible to build on 
       else:
         collision_detection()
-      
+
+    # What happens if you fail collision tests
+    else:
+      print('CANT BUILD THAT HERE TRY AGAIN')
