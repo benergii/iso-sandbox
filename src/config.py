@@ -57,7 +57,6 @@ popup_definition = [
         'right'
       ], [
         'down',
-        'flat',
         'up'
       ]
     ]

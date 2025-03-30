@@ -11,6 +11,9 @@ direction_mapper = [
 ]
 construction_direction = 0
 
+last_piece_placed = None
+current_height = None
+
 # Use the 'z' key to rotate the orientation of the starting line
 def rotate_starting_piece():
 
@@ -94,16 +97,22 @@ def complete_line_construction():
 
 def place_first_piece_of_line():
 
+  global last_piece_placed, current_height
+
   # If no current pieces have been placed yet then place the first piece
   if len(config.temp_cells_constructed_on) == 0:
 
+    # Setting up the localised construction variables
+    last_piece_placed = 'straight'
+    current_height = config.gameboard[config.interaction_cells[0]]['height']
+
     # Add a line object to the cell being clicked on
     config.gameboard[config.interaction_cells[0]]['objectOnCell'] = {
-      'type': 'line',
+      'type': 'straight',
       'orientation': construction_direction
     }
 
-    config.gameboard[config.interaction_cells[0]]['objectHeight'] = 0
+    config.gameboard[config.interaction_cells[0]]['objectHeight'] = current_height
 
     # Log the clicked cell as the first cell being constructed on
     config.temp_cells_constructed_on.append(config.interaction_cells[0])
@@ -111,8 +120,8 @@ def place_first_piece_of_line():
     # Write first coordinate to the temp object path
     config.temp_path.append(
       find_vector_midpoint(
-        add_vectors(config.gameboard[config.interaction_cells[0]]['v2'], [0, config.gameboard[config.interaction_cells[0]]['height']]),
-        add_vectors(config.gameboard[config.interaction_cells[0]]['v0'], [0, config.gameboard[config.interaction_cells[0]]['height']])
+        add_vectors(config.gameboard[config.interaction_cells[0]]['v2'], [0, current_height]),
+        add_vectors(config.gameboard[config.interaction_cells[0]]['v0'], [0, current_height])
       )
     )
 
@@ -133,7 +142,7 @@ def place_first_piece_of_line():
 # Pretty much the same pattern as above but with the construction_cell being used as reference rather than interaction_cell
 def construct_path_popup(action):
 
-  global construction_direction
+  global construction_direction, last_piece_placed, current_height
 
   if len(config.temp_cells_constructed_on) != 0:
 
@@ -159,10 +168,27 @@ def construct_path_popup(action):
         # Update the construction direction to reflect the direction provided in function
         construction_direction = (construction_direction - 1) % 4
 
-      # else - drawing a straight line, which is trivially of orientation == direction
-      else:
-        line_type = 'line'
+      # UP BUTTON
+      elif action == 'up':
+        line_type = 'straightToSlope' if last_piece_placed != 'up' else 'slope'
         line_orientation = construction_direction
+
+      # DOWN BUTTON
+      elif action == 'down':
+        line_type = 'slopeToStraight' if last_piece_placed != 'down' else 'slope'
+        line_orientation = (construction_direction + 2) % 4
+
+      # else - drawing a straight line, which is trivially of orientation == direction
+      elif action == 'straight':
+        if last_piece_placed == 'down':
+          line_type = 'straightToSlope'
+          line_orientation = (construction_direction + 2) % 4
+        elif last_piece_placed == 'up':
+          line_type = 'slopeToStraight'
+          line_orientation = construction_direction
+        else:
+          line_type = 'straight'
+          line_orientation = construction_direction
 
       # Adding the line object to the cell
       config.gameboard[config.construction_cell]['objectOnCell'] = {
@@ -170,7 +196,7 @@ def construct_path_popup(action):
         'orientation': line_orientation
       }
       # Specifying the height of the line object - 0 as placeholder
-      config.gameboard[config.construction_cell]['objectHeight'] = 0
+      config.gameboard[config.construction_cell]['objectHeight'] = current_height
 
       # Continuing to add to the list of cells constructed on - so we can wipe them out if exit partway through
       config.temp_cells_constructed_on.append(config.construction_cell)
@@ -178,10 +204,14 @@ def construct_path_popup(action):
       # Adding the new point to the temp path
       config.temp_path.append(
         find_vector_midpoint(
-          add_vectors(config.gameboard[config.construction_cell]['v2'], [0, config.gameboard[config.construction_cell]['height']]),
-          add_vectors(config.gameboard[config.construction_cell]['v0'], [0, config.gameboard[config.construction_cell]['height']])
+          add_vectors(config.gameboard[config.construction_cell]['v2'], [0, current_height]),
+          add_vectors(config.gameboard[config.construction_cell]['v0'], [0, current_height])
         )
       )
+
+      # Increment the working height if up/down arrows have been pressed
+      if action == 'down': current_height -= config.unit_height
+      elif action == 'up': current_height += config.unit_height
 
       # Write cell height to temp height array
       config.temp_height.append(config.gameboard[config.construction_cell]['height'])
@@ -191,8 +221,10 @@ def construct_path_popup(action):
       # increment the construction cell to the next one
       config.construction_cell = tuple(add_vectors(config.construction_cell, direction_mapper[construction_direction]))
 
-      # Is the line complete? If so, let's kill this!
+      # Updating the last piece placed variable
+      last_piece_placed = action
 
+      # Is the line complete? If so, let's kill this!
       if (
         config.temp_cells_constructed_on[0] == config.construction_cell
         and construction_direction == config.gameboard[config.construction_cell]['objectOnCell']['orientation']
