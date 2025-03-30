@@ -148,9 +148,9 @@ def render_with_dictionary():
 
           orientation = cell['objectOnCell']['orientation']
 
-          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
-          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
 
           # Drawing the line
           glColor(0, 0, 1)
@@ -166,9 +166,9 @@ def render_with_dictionary():
 
           orientation = cell['objectOnCell']['orientation']
 
-          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
-          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
 
           
           
@@ -186,9 +186,9 @@ def render_with_dictionary():
 
           orientation = cell['objectOnCell']['orientation']
 
-          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
-          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
 
           # Drawing the line
           glColor(0, 0, 1)
