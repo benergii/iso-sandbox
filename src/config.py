@@ -58,6 +58,8 @@ popup_definition = [
       ], [
         'down',
         'up'
+      ], [
+        'delete'
       ]
     ]
   }, {

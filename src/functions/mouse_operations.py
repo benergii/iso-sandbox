@@ -86,6 +86,8 @@ def mouse_click_mechanics(button, state, x, y):
           kill_the_path_early()
           config.terraform_scalar = 0
 
+          return
+
       # ---- POPUP BUTTONS ---- #
 
       if config.user_data['mode']:
@@ -97,6 +99,8 @@ def mouse_click_mechanics(button, state, x, y):
 
             # Then perform the function dictated by f'{user mode}_popup', with the button name passed as argument
             globals()[f'{config.user_data['mode']}_popup'](button['name'])
+
+            return
       
       # ---- Bespoke actions ---- #
 
