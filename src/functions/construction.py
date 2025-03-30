@@ -125,8 +125,8 @@ def place_first_piece_of_line():
       )
     )
 
-    # Write cell height to temp height array
-    config.temp_height.append(config.gameboard[config.interaction_cells[0]]['height'])
+    # Write current height to temp height array
+    config.temp_height.append(current_height)
 
     # Now dictate that the next cell being constructed on is x/y +- 1 away from the interaction cell
     config.construction_cell = tuple(add_vectors(config.interaction_cells[0], direction_mapper[construction_direction]))
@@ -209,12 +209,12 @@ def construct_path_popup(action):
         )
       )
 
+      # Write current height to temp height array
+      config.temp_height.append(current_height)
+
       # Increment the working height if up/down arrows have been pressed
       if action == 'down': current_height -= config.unit_height
       elif action == 'up': current_height += config.unit_height
-
-      # Write cell height to temp height array
-      config.temp_height.append(config.gameboard[config.construction_cell]['height'])
 
       print(f'{action} line placed on cell {config.construction_cell}')
 
