@@ -99,7 +99,24 @@ def render_with_dictionary():
       # For now just going to render straight lines...
       if cell['objectOnCell']:
 
-        if cell['objectOnCell']['type'] == 'line':
+        # Rendering the support beam underneath the path
+        centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+        glColor(0.8, 0.8, 0.8)
+        glLineWidth(3)
+        glBegin(GL_LINE_STRIP)
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
+        glEnd()
+
+        # Rendering the support beam footer
+        glLineWidth(5)
+        glColor(0.4, 0.4, 0.4)
+        glBegin(GL_LINE_STRIP)
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
+        glVertex2f(*add_vectors(centre_vertex, [0, cell['height'] - 0.007], config.camera_offset))
+        glEnd()
+
+        if cell['objectOnCell']['type'] == 'straight':
 
           # Getting the orientation of the line
           orientation = cell['objectOnCell']['orientation']
@@ -110,10 +127,10 @@ def render_with_dictionary():
 
           # Drawing the line
           glColor(0, 0, 1)
-          glLineWidth(3)
+          glLineWidth(4)
           glBegin(GL_LINE_LOOP)
-          glVertex2f(*add_vectors(start_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
-          glVertex2f(*add_vectors(end_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight']], config.camera_offset))
           glEnd()
         
         elif cell['objectOnCell']['type'] == 'turn':
@@ -137,11 +154,66 @@ def render_with_dictionary():
 
           # Drawing the corner
           glColor(0, 0, 1)
-          glLineWidth(3)
+          glLineWidth(4)
           glBegin(GL_LINE_STRIP)
-          glVertex2f(*add_vectors(start_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
-          glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
-          glVertex2f(*add_vectors(end_vertex, [0, cell['height']], [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glEnd()
+
+        elif cell['objectOnCell']['type'] == 'slope':
+
+          orientation = cell['objectOnCell']['orientation']
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
+
+          # Drawing the line
+          glColor(0, 0, 1)
+          glLineWidth(4)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight'] - config.unit_height / 2], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight'] + config.unit_height / 2], config.camera_offset))
+          glEnd()
+
+        # Now let's try to render slopes, dear god man
+        elif cell['objectOnCell']['type'] == 'straightToSlope':
+
+          orientation = cell['objectOnCell']['orientation']
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
+
+          
+          
+
+          # Drawing the line
+          glColor(0, 0, 1)
+          glLineWidth(4)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight'] + config.unit_height / 2], config.camera_offset))
+          glEnd()
+
+        elif cell['objectOnCell']['type'] == 'slopeToStraight':
+
+          orientation = cell['objectOnCell']['orientation']
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
+
+          # Drawing the line
+          glColor(0, 0, 1)
+          glLineWidth(4)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight'] - config.unit_height / 2], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight']], config.camera_offset))
           glEnd()
 
     # Else, if they're an object...

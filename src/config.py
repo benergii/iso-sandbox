@@ -51,15 +51,24 @@ popup_definition = [
   {
     'name': 'construct_path',
     'buttons': [
-      'left',
-      'straight',
-      'right'
+      [
+        'left',
+        'straight',
+        'right'
+      ], [
+        'down',
+        'up'
+      ], [
+        'delete'
+      ]
     ]
   }, {
     'name': 'terraform',
     'buttons': [
-      'decrease',
-      'increase',
+      [
+        'decrease',
+        'increase',
+      ]
     ]
   }
 ]
