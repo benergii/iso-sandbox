@@ -31,8 +31,8 @@ def collision_detection():
 
   # Cases we need to account for:
   if (
-    # 1: construction cell already has an object on it
-    config.gameboard[config.construction_cell]['objectOnCell']
+    # 1: construction cell already has an object on it at the current construction height
+    config.gameboard[config.construction_cell]['objectHeight'] == current_height
     # 2: construction cell is higher than last built path segment
     or config.gameboard[config.construction_cell]['height'] > config.temp_height[-1]
   ):
