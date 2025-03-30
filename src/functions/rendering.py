@@ -148,7 +148,7 @@ def render_with_dictionary():
 
           orientation = cell['objectOnCell']['orientation']
 
-          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
           end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
 
@@ -158,7 +158,7 @@ def render_with_dictionary():
           glBegin(GL_LINE_STRIP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight'] - config.unit_height / 2], config.camera_offset))
           glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
-          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight'] + (config.unit_height / 2)], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight'] + config.unit_height / 2], config.camera_offset))
           glEnd()
 
         # Now let's try to render slopes, dear god man
@@ -166,9 +166,12 @@ def render_with_dictionary():
 
           orientation = cell['objectOnCell']['orientation']
 
-          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
           end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
+
+          
+          
 
           # Drawing the line
           glColor(0, 0, 1)
@@ -176,14 +179,14 @@ def render_with_dictionary():
           glBegin(GL_LINE_STRIP)
           glVertex2f(*add_vectors(start_vertex, [0, cell['objectHeight']], config.camera_offset))
           glVertex2f(*add_vectors(centre_vertex, [0, cell['objectHeight']], config.camera_offset))
-          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight'] + (config.unit_height / 2)], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell['objectHeight'] + config.unit_height / 2], config.camera_offset))
           glEnd()
 
         elif cell['objectOnCell']['type'] == 'slopeToStraight':
 
           orientation = cell['objectOnCell']['orientation']
 
-          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation % 2) % 4}'], cell[f'v{(orientation % 2) % 4}'])
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
           end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation % 2) % 4}'], cell[f'v{(2 + orientation % 2) % 4}'])
 
