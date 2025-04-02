@@ -99,22 +99,23 @@ def render_with_dictionary():
       # For now just going to render straight lines...
       for cell_object in cell['objectsOnCell']:
 
-        # Rendering the support beam underneath the path
-        centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
-        glColor(0.8, 0.8, 0.8)
-        glLineWidth(3)
-        glBegin(GL_LINE_STRIP)
-        glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
-        glVertex2f(*add_vectors(centre_vertex, [0, cell_object['height']], config.camera_offset))
-        glEnd()
+        if cell_object['support']:
+          # Rendering the support beam underneath the path
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+          glColor(0.8, 0.8, 0.8)
+          glLineWidth(3)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell_object['height']], config.camera_offset))
+          glEnd()
 
-        # Rendering the support beam footer
-        glLineWidth(5)
-        glColor(0.4, 0.4, 0.4)
-        glBegin(GL_LINE_STRIP)
-        glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
-        glVertex2f(*add_vectors(centre_vertex, [0, cell['height'] - 0.007], config.camera_offset))
-        glEnd()
+          # Rendering the support beam footer
+          glLineWidth(5)
+          glColor(0.4, 0.4, 0.4)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['height']], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell['height'] - 0.007], config.camera_offset))
+          glEnd()
 
         if cell_object['type'] == 'straight':
 

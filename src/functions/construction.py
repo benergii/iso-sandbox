@@ -111,7 +111,8 @@ def place_first_piece_of_line():
     config.gameboard[config.interaction_cells[0]]['objectsOnCell'].append({
       'type': 'straight',
       'orientation': construction_direction,
-      'height': current_height
+      'height': current_height,
+      'support': True
     })
 
     # Log the clicked cell as the first cell being constructed on
@@ -227,7 +228,10 @@ def construct_path_popup(action):
         config.gameboard[config.construction_cell]['objectsOnCell'].append({
           'type': line_type,
           'orientation': line_orientation,
-          'height': current_height
+          'height': current_height,
+          'support': False if any(
+            obj['height'] < current_height for obj in config.gameboard[config.construction_cell]['objectsOnCell']
+          ) else True
         })
 
         # Continuing to add to the list of cells constructed on - so we can wipe them out if exit partway through
