@@ -49,8 +49,7 @@ def build_iso_gameboard():
         'v3': [v4_x, v4_y],
         'height': config.unit_height,
         'color': gameboard_colors[randint(0, len(gameboard_colors) - 1)],
-        'objectOnCell': None,
-        'objectHeight': None
+        'objectsOnCell': []
       }
 
   # Now return the cells dictionary, as well as the list in which to render the cells
