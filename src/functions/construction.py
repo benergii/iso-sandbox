@@ -234,6 +234,10 @@ def construct_path_popup(action):
           ) else True
         })
 
+        # Removing supports for any pieces which might be above the one just placed
+        for obj in config.gameboard[config.construction_cell]['objectsOnCell']:
+          if obj['height'] > current_height: obj['support'] = False
+
         # Continuing to add to the list of cells constructed on - so we can wipe them out if exit partway through
         config.temp_cells_constructed_on.append(config.construction_cell)
 
