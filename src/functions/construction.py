@@ -32,7 +32,7 @@ def collision_detection():
   # Cases we need to account for:
   if (
     # 1: construction cell already has an object on it at the current construction height
-    config.gameboard[config.construction_cell]['objectHeight'] == current_height
+    any(objects['height'] == current_height for objects in config.gameboard[config.construction_cell]['objectsOnCell'])
     # 2: construction cell is higher than current piece attempting to build
     or config.gameboard[config.construction_cell]['height'] > current_height
   ):
@@ -51,8 +51,7 @@ def kill_the_path_early():
   # This pattern was an EXCELLENT idea - good on you for thinking of it early
   for cell_index in config.temp_cells_constructed_on:
 
-    config.gameboard[cell_index]['objectOnCell'] = None
-    config.gameboard[cell_index]['objectHeight'] = None
+    config.gameboard[cell_index]['objectsOnCell'].pop()
   
   # Then just reset all the construction vars back to default
   config.temp_cells_constructed_on = []
@@ -109,12 +108,12 @@ def place_first_piece_of_line():
     current_height = config.gameboard[config.interaction_cells[0]]['height']
 
     # Add a line object to the cell being clicked on
-    config.gameboard[config.interaction_cells[0]]['objectOnCell'] = {
+    config.gameboard[config.interaction_cells[0]]['objectsOnCell'].append({
       'type': 'straight',
-      'orientation': construction_direction
-    }
-
-    config.gameboard[config.interaction_cells[0]]['objectHeight'] = current_height
+      'orientation': construction_direction,
+      'height': current_height,
+      'support': True
+    })
 
     # Log the clicked cell as the first cell being constructed on
     config.temp_cells_constructed_on.append(config.interaction_cells[0])
@@ -156,8 +155,8 @@ def construct_path_popup(action):
     # Let's write in the 'delete' button first
     if action == 'delete':
 
-      # 1. Set current height to objectHeight of last constructed piece
-      current_height = config.gameboard[config.temp_cells_constructed_on[-1]]['objectHeight']
+      # 1. Set current height to last recorded temp height
+      current_height = config.temp_height[-1]
       
       # 2. Set construction cell to the last cell constructed on
       #    OR IF DELETING THE FIRST PIECE THEN JUST WIPE IT OUT
@@ -168,8 +167,7 @@ def construct_path_popup(action):
       elif button_sequence[-1] == 'right': construction_direction = (construction_direction + 1) % 4
 
       # 4. Wipe out the object on the cell
-      config.gameboard[config.temp_cells_constructed_on[-1]]['objectOnCell'] = None
-      config.gameboard[config.temp_cells_constructed_on[-1]]['objectHeight'] = None
+      config.gameboard[config.temp_cells_constructed_on[-1]]['objectsOnCell'].pop()
 
       # 5. Pop the last entries from the Config arrays + button sequence
       config.temp_cells_constructed_on.pop()
@@ -227,12 +225,18 @@ def construct_path_popup(action):
             line_orientation = construction_direction
 
         # Adding the line object to the cell
-        config.gameboard[config.construction_cell]['objectOnCell'] = {
+        config.gameboard[config.construction_cell]['objectsOnCell'].append({
           'type': line_type,
-          'orientation': line_orientation
-        }
-        # Specifying the height of the line object - 0 as placeholder
-        config.gameboard[config.construction_cell]['objectHeight'] = current_height
+          'orientation': line_orientation,
+          'height': current_height,
+          'support': False if any(
+            obj['height'] < current_height for obj in config.gameboard[config.construction_cell]['objectsOnCell']
+          ) else True
+        })
+
+        # Removing supports for any pieces which might be above the one just placed
+        for obj in config.gameboard[config.construction_cell]['objectsOnCell']:
+          if obj['height'] > current_height: obj['support'] = False
 
         # Continuing to add to the list of cells constructed on - so we can wipe them out if exit partway through
         config.temp_cells_constructed_on.append(config.construction_cell)
@@ -263,7 +267,7 @@ def construct_path_popup(action):
         # Is the line complete? If so, let's kill this!
         if (
           config.temp_cells_constructed_on[0] == config.construction_cell
-          and construction_direction == config.gameboard[config.construction_cell]['objectOnCell']['orientation']
+          and construction_direction == config.gameboard[config.construction_cell]['objectsOnCell'][-1]['orientation']
         ):
           complete_line_construction()
 
