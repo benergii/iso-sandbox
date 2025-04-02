@@ -32,7 +32,7 @@ def collision_detection():
   # Cases we need to account for:
   if (
     # 1: construction cell already has an object on it at the current construction height
-    config.gameboard[config.construction_cell]['objectHeight'] == current_height
+    any(objects['height'] == current_height for objects in config.gameboard[config.construction_cell]['objectsOnCell'])
     # 2: construction cell is higher than current piece attempting to build
     or config.gameboard[config.construction_cell]['height'] > current_height
   ):
@@ -51,8 +51,7 @@ def kill_the_path_early():
   # This pattern was an EXCELLENT idea - good on you for thinking of it early
   for cell_index in config.temp_cells_constructed_on:
 
-    config.gameboard[cell_index]['objectOnCell'] = None
-    config.gameboard[cell_index]['objectHeight'] = None
+    config.gameboard[cell_index]['objectsOnCell'].pop()
   
   # Then just reset all the construction vars back to default
   config.temp_cells_constructed_on = []
