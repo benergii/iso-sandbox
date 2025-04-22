@@ -212,13 +212,29 @@ def construct_path_popup(action):
           line_type = 'slopeToStraight' if button_sequence[-1] != 'down' else 'slope'
           line_orientation = (construction_direction + 2) % 4
 
+        # STEEP UP BUTTON
+        elif action == 'upSteep':
+          line_type = 'straightToSteep' if button_sequence[-1] != 'upSteep' else 'steep'
+          line_orientation = construction_direction
+        
+        # STEEP DOWN BUTTON
+        elif action == 'downSteep':
+          line_type = 'steepToStraight' if button_sequence[-1] != 'downSteep' else 'steep'
+          line_orientation = (construction_direction + 2) % 4
+
         # else - drawing a straight line, which is trivially of orientation == direction
         elif action == 'straight':
-          if button_sequence[-1] == 'down':
+          if button_sequence[-1] == 'downSteep':
+            line_type = 'straightToSteep'
+            line_orientation = (construction_direction + 2) % 4
+          elif button_sequence[-1] == 'down':
             line_type = 'straightToSlope'
             line_orientation = (construction_direction + 2) % 4
           elif button_sequence[-1] == 'up':
             line_type = 'slopeToStraight'
+            line_orientation = construction_direction
+          elif button_sequence[-1] == 'upSteep':
+            line_type = 'steepToStraight'
             line_orientation = construction_direction
           else:
             line_type = 'straight'
@@ -254,7 +270,9 @@ def construct_path_popup(action):
 
         # Increment the working height if up/down arrows have been pressed
         if action == 'down': current_height -= config.unit_height
+        elif action == 'downSteep': current_height -= config.unit_height * 2
         elif action == 'up': current_height += config.unit_height
+        elif action == 'upSteep': current_height += config.unit_height * 2
 
         print(f'{action} line placed on cell {config.construction_cell}')
 

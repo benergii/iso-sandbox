@@ -56,8 +56,10 @@ popup_definition = [
         'straight',
         'right'
       ], [
+        'downSteep',
         'down',
-        'up'
+        'up',
+        'upSteep'
       ], [
         'delete'
       ]

@@ -179,6 +179,23 @@ def render_with_dictionary():
           glVertex2f(*add_vectors(end_vertex, [0, cell_object['height'] + config.unit_height / 2], config.camera_offset))
           glEnd()
 
+        elif cell_object['type'] == 'steep':
+
+          orientation = cell_object['orientation']
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
+
+          # Drawing the line
+          glColor(0, 0, 1)
+          glLineWidth(4)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell_object['height'] - config.unit_height], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell_object['height']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell_object['height'] + config.unit_height], config.camera_offset))
+          glEnd()
+
         # Now let's try to render slopes, dear god man
         elif cell_object['type'] == 'straightToSlope':
 
@@ -187,9 +204,6 @@ def render_with_dictionary():
           start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
           centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
           end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
-
-          
-          
 
           # Drawing the line
           glColor(0, 0, 1)
@@ -213,6 +227,40 @@ def render_with_dictionary():
           glLineWidth(4)
           glBegin(GL_LINE_STRIP)
           glVertex2f(*add_vectors(start_vertex, [0, cell_object['height'] - config.unit_height / 2], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell_object['height']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell_object['height']], config.camera_offset))
+          glEnd()
+
+        elif cell_object['type'] == 'straightToSteep':
+
+          orientation =  cell_object['orientation']
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
+
+          # Drawing the line
+          glColor(0, 0, 1)
+          glLineWidth(4)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell_object['height']], config.camera_offset))
+          glVertex2f(*add_vectors(centre_vertex, [0, cell_object['height']], config.camera_offset))
+          glVertex2f(*add_vectors(end_vertex, [0, cell_object['height'] + config.unit_height], config.camera_offset))
+          glEnd()
+
+        elif cell_object['type'] == 'steepToStraight':
+
+          orientation = cell_object['orientation']
+
+          start_vertex = find_vector_midpoint(cell[f'v{(3 + orientation) % 4}'], cell[f'v{orientation}'])
+          centre_vertex = find_vector_midpoint(cell['v2'], cell['v0'])
+          end_vertex = find_vector_midpoint(cell[f'v{(1 + orientation) % 4}'], cell[f'v{(2 + orientation) % 4}'])
+
+          # Drawing the line
+          glColor(0, 0, 1)
+          glLineWidth(4)
+          glBegin(GL_LINE_STRIP)
+          glVertex2f(*add_vectors(start_vertex, [0, cell_object['height'] - config.unit_height], config.camera_offset))
           glVertex2f(*add_vectors(centre_vertex, [0, cell_object['height']], config.camera_offset))
           glVertex2f(*add_vectors(end_vertex, [0, cell_object['height']], config.camera_offset))
           glEnd()
